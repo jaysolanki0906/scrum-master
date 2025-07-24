@@ -1,0 +1,598 @@
+// Variables
+$primary-color: #3b82f6;
+$secondary-color: #64748b;
+$success-color: #10b981;
+$warning-color: #f59e0b;
+$danger-color: #ef4444;
+$background-light: #f8fafc;
+$white: #ffffff;
+$gray-100: #f1f5f9;
+$gray-200: #e2e8f0;
+$gray-400: #94a3b8;
+$gray-600: #64748b;
+$gray-800: #1e293b;
+$gray-900: #0f172a;
+
+$border-radius: 15px;
+$border-radius-lg: 20px;
+$transition: all 0.3s ease;
+$box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+$box-shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.12);
+
+// Mixins
+@mixin card-hover {
+  transform: translateY(-2px);
+  box-shadow: $box-shadow-hover;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Dashboard Container
+.dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow;
+  border: 1px solid $gray-200;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+// Header
+.header {
+  background: $white;
+  color: $gray-800;
+  padding: 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid $gray-200;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23e2e8f0" fill-opacity="0.3"><circle cx="30" cy="30" r="2"/></g></svg>') repeat;
+    animation: float 20s ease-in-out infinite;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+    color: $gray-800;
+
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+  }
+
+  p {
+    font-size: 1.1rem;
+    opacity: 0.7;
+    position: relative;
+    z-index: 1;
+    color: $gray-600;
+    margin: 0;
+  }
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  50% { 
+    transform: translateY(-20px) rotate(180deg); 
+  }
+}
+
+// Summary Cards
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 30px;
+  background: $white;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+}
+
+.summary-card {
+  background: $white;
+  border-radius: $border-radius;
+  padding: 25px;
+  box-shadow: $box-shadow;
+  transition: $transition;
+  border: 1px solid $gray-200;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: $primary-color;
+    border-radius: $border-radius $border-radius 0 0;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: $box-shadow-hover;
+  }
+
+  &:nth-child(1)::before {
+    background: $primary-color;
+  }
+
+  &:nth-child(2)::before {
+    background: $success-color;
+  }
+
+  &:nth-child(3)::before {
+    background: $danger-color;
+  }
+
+  &:nth-child(4)::before {
+    background: $warning-color;
+  }
+
+  .card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    @include flex-center;
+    font-size: 24px;
+    margin-bottom: 15px;
+    background: $gray-100;
+    color: $primary-color;
+    border: 1px solid $gray-200;
+    transition: $transition;
+
+    &.projects-icon {
+      color: $primary-color;
+    }
+
+    &.tasks-icon {
+      color: $success-color;
+    }
+
+    &.bugs-icon {
+      color: $danger-color;
+    }
+
+    &.hours-icon {
+      color: $warning-color;
+    }
+  }
+
+  .card-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $gray-600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    @include text-truncate;
+  }
+
+  .card-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: $gray-800;
+    margin-bottom: 5px;
+    line-height: 1;
+
+    @media (max-width: 480px) {
+      font-size: 1.8rem;
+    }
+  }
+
+  .card-subtitle {
+    font-size: 0.85rem;
+    color: $gray-400;
+    line-height: 1.4;
+  }
+
+  // Loading state
+  &.loading {
+    .card-value,
+    .card-subtitle {
+      background: $gray-100;
+      color: transparent;
+      border-radius: 4px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .card-value {
+      height: 32px;
+      margin-bottom: 8px;
+    }
+
+    .card-subtitle {
+      height: 16px;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// Charts Grid
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 30px;
+  padding: 30px;
+  background: $background-light;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.chart-container {
+  background: $white;
+  border-radius: $border-radius-lg;
+  padding: 25px;
+  box-shadow: $box-shadow;
+  transition: $transition;
+  border: 1px solid $gray-200;
+  position: relative;
+
+  &:hover {
+    @include card-hover;
+  }
+
+  .chart-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: $gray-800;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &::before {
+      content: '';
+      width: 4px;
+      height: 20px;
+      background: $primary-color;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+    }
+  }
+
+  .chart-wrapper {
+    position: relative;
+    height: 300px;
+    margin-bottom: 15px;
+
+    @media (max-width: 480px) {
+      height: 250px;
+    }
+
+    canvas {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+
+  // Loading state for charts
+  &.loading {
+    .chart-wrapper {
+      background: $gray-100;
+      border-radius: 8px;
+      @include flex-center;
+      
+      &::after {
+        content: 'Loading...';
+        color: $gray-400;
+        font-size: 0.9rem;
+      }
+    }
+  }
+
+  // Chart specific styles
+  &.doughnut-chart {
+    .chart-wrapper {
+      @include flex-center;
+    }
+  }
+
+  &.bar-chart,
+  &.line-chart {
+    .chart-wrapper {
+      padding: 10px 0;
+    }
+  }
+}
+
+// Status Indicators
+.status-indicators {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+
+  @media (max-width: 480px) {
+    gap: 10px;
+    margin-top: 10px;
+  }
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: $background-light;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid $gray-200;
+  transition: $transition;
+  white-space: nowrap;
+
+  &:hover {
+    background: $white;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 480px) {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+
+    &.done {
+      background: $success-color;
+    }
+
+    &.in-progress {
+      background: $warning-color;
+    }
+
+    &.todo {
+      background: $danger-color;
+    }
+
+    &.task {
+      background: $primary-color;
+    }
+
+    &.bug {
+      background: $danger-color;
+    }
+  }
+}
+
+// Footer
+.footer {
+  background: $background-light;
+  color: $gray-600;
+  padding: 20px 30px;
+  text-align: center;
+  font-size: 0.9rem;
+  border-top: 1px solid $gray-200;
+
+  @media (max-width: 480px) {
+    padding: 15px 20px;
+    font-size: 0.85rem;
+  }
+}
+
+// Utility Classes
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.mt-0 {
+  margin-top: 0;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+// Animation Classes
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Error States
+.error-state {
+  @include flex-center;
+  flex-direction: column;
+  padding: 40px;
+  color: $gray-400;
+  
+  .error-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: $danger-color;
+  }
+  
+  .error-message {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .error-description {
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
+}
+
+// Empty States
+.empty-state {
+  @include flex-center;
+  flex-direction: column;
+  padding: 60px 20px;
+  color: $gray-400;
+  
+  .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+  
+  .empty-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: $gray-600;
+  }
+  
+  .empty-description {
+    font-size: 0.9rem;
+    text-align: center;
+    max-width: 300px;
+  }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+  .charts-grid {
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  }
+}
+
+@media (max-width: 992px) {
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .dashboard-container {
+    margin: 0 10px;
+    border-radius: 10px;
+  }
+  
+  .summary-cards {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding: 20px;
+  }
+  
+  .summary-card {
+    padding: 20px;
+  }
+  
+  .charts-grid {
+    padding: 20px;
+    gap: 20px;
+  }
+  
+  .chart-container {
+    padding: 20px;
+  }
+}

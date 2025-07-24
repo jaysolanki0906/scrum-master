@@ -1,0 +1,266 @@
+<div class="scrum-board">
+  <!-- Header -->
+  <div class="header">
+    <div class="left-section">
+      <div class="sprint-info">
+        <div class="sprint-dropdown">
+          <label for="sprintSelect">Select Sprint:</label>
+          <select
+            [(ngModel)]="selectedSprint"
+            (change)="onSprintChange(selectedSprint)"
+          >
+            <option *ngFor="let sprint of sprintList" [ngValue]="sprint">
+              {{ sprint.sprintName }}
+            </option>
+          </select>
+        </div>
+
+        <div class="sprint-info" *ngIf="selectedSprint">
+          <span>{{ selectedSprint.sprintName }}</span>
+          <span class="date-range">
+            {{ selectedSprint.startDate | date : "dd MMM yyyy" }} -
+            {{ selectedSprint.endDate | date : "dd MMM yyyy" }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-section">
+      <div class="controls">
+        <button class="control-btn" (click)="addStoryDialog()">
+          Add Story
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Board Table -->
+  <div class="board-table-container">
+    <table class="scrum-table">
+      <thead>
+        <tr>
+          <th class="story-column">Story</th>
+          <th class="task-column todo-column">To Do</th>
+          <th class="task-column progress-column">In Progress</th>
+          <th class="task-column done-column">Done</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let story of storyList" class="story-row">
+          <!-- Story Column -->
+          <td class="story-cell">
+            <div class="story-card">
+              <div class="story-header">
+                <span class="story-id">{{ story.title }}</span>
+                <button
+                  class="add-task-btn"
+                  title="Add Task"
+                  (click)="addTask(story)"
+                >
+                  +
+                </button>
+              </div>
+              <div class="story-title">{{ story.description }}</div>
+              <div class="story-footer">
+                <span class="team-badge">{{ story.status }}</span>
+                <div class="story-actions">
+                  <button class="action-btn" (click)="editDialog(story)">
+                    Edit
+                  </button>
+                  <button class="action-btn" (click)="deleteDialog(story)">
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </td>
+
+          <!-- To Do Tasks Column -->
+          <td class="task-cell todo-cell">
+            <div class="task-container">
+              <div
+                class="task-card todo-task"
+                *ngFor="let task of getTasksByStatus(story.tasks, 'Todo'); let i = index"
+                (mouseenter)="hoveredTaskId = task.id"
+                (mouseleave)="hoveredTaskId = null"
+              >
+                <div class="task-header">
+                  <span class="task-id">{{ task.title }}</span>
+                  <div class="task-options" [style.visibility]="hoveredTaskId === task.id ? 'visible' : 'hidden'">
+                    <button 
+                      mat-icon-button 
+                      [matMenuTriggerFor]="taskMenu"
+                      (click)="$event.stopPropagation()"
+                    >
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+
+                    <mat-menu #taskMenu="matMenu">
+                      <button mat-menu-item (click)="onViewTask(task)">
+                        <mat-icon>visibility</mat-icon>
+                        <span>View</span>
+                      </button>
+                      <button mat-menu-item (click)="onEditTask(task)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Edit</span>
+                      </button>
+                      <button mat-menu-item (click)="onDeleteTask(task)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Delete</span>
+                      </button>
+                      <button mat-menu-item (click)="loggingEffort(task)">
+                        <mat-icon>schedule</mat-icon>
+                        <span>Logging effort</span>
+                      </button>
+                    </mat-menu>
+                  </div>
+                </div>
+
+                <div class="task-description">{{ task.description }}</div>
+                <div class="task-details">
+                  <span class="task-estimate">{{ task.estimated_hours }}h</span>
+                  <span class="task-points">{{ task.points }}pts</span>
+                  <span class="task-type">{{ task.type }}</span>
+                </div>
+                <div class="task-meta">
+                  <span class="task-assignee">Assigned: {{ task.assign_to }}</span>
+                  <span class="task-date">{{ task.created_at | date : "short" }}</span>
+                </div>
+              </div>
+
+              <div
+                *ngIf="getTasksByStatus(story.tasks, 'Todo').length === 0"
+                class="no-tasks"
+              >
+                No tasks
+              </div>
+            </div>
+          </td>
+
+          <!-- In Progress Tasks Column -->
+          <td class="task-cell progress-cell">
+            <div class="task-container">
+              <div
+                class="task-card progress-task"
+                *ngFor="let task of getTasksByStatus(story.tasks, 'In Progress'); let i = index"
+                (mouseenter)="hoveredTaskId = task.id"
+                (mouseleave)="hoveredTaskId = null"
+              >
+                <div class="task-header">
+                  <span class="task-id">{{ task.title }}</span>
+                  <div class="task-options" [style.visibility]="hoveredTaskId === task.id ? 'visible' : 'hidden'">
+                    <button 
+                      mat-icon-button 
+                      [matMenuTriggerFor]="progressMenu"
+                      (click)="$event.stopPropagation()"
+                    >
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+
+                    <mat-menu #progressMenu="matMenu">
+                      <button mat-menu-item (click)="onViewTask(task)">
+                        <mat-icon>visibility</mat-icon>
+                        <span>View</span>
+                      </button>
+                      <button mat-menu-item (click)="onEditTask(task)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Edit</span>
+                      </button>
+                      <button mat-menu-item (click)="onDeleteTask(task)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Delete</span>
+                      </button>
+                      <button mat-menu-item (click)="loggingEffort(task)">
+                        <mat-icon>schedule</mat-icon>
+                        <span>Logging effort</span>
+                      </button>
+                    </mat-menu>
+                  </div>
+                </div>
+                <div class="task-description">{{ task.description }}</div>
+                <div class="task-details">
+                  <span class="task-estimate">{{ task.estimated_hours }}h</span>
+                  <span class="task-points">{{ task.points }}pts</span>
+                  <span class="task-type">{{ task.type }}</span>
+                </div>
+                <div class="task-meta">
+                  <span class="task-assignee">Assigned: {{ task.assign_to }}</span>
+                  <span class="task-date">{{ task.created_at | date : "short" }}</span>
+                </div>
+              </div>
+              <div
+                *ngIf="getTasksByStatus(story.tasks, 'In Progress').length === 0"
+                class="no-tasks"
+              >
+                No tasks
+              </div>
+            </div>
+          </td>
+
+          <!-- Done Tasks Column -->
+          <td class="task-cell done-cell">
+            <div class="task-container">
+              <div
+                class="task-card done-task"
+                *ngFor="let task of getTasksByStatus(story.tasks, 'Done'); let i = index"
+                (mouseenter)="hoveredTaskId = task.id"
+                (mouseleave)="hoveredTaskId = null"
+              >
+                <div class="task-header">
+                  <span class="task-id">{{ task.title }}</span>
+                  <div class="task-options" [style.visibility]="hoveredTaskId === task.id ? 'visible' : 'hidden'">
+                    <button 
+                      mat-icon-button 
+                      [matMenuTriggerFor]="doneMenu"
+                      (click)="$event.stopPropagation()"
+                    >
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+
+                    <mat-menu #doneMenu="matMenu">
+                      <button mat-menu-item (click)="onViewTask(task)">
+                        <mat-icon>visibility</mat-icon>
+                        <span>View</span>
+                      </button>
+                      <button mat-menu-item (click)="onEditTask(task)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Edit</span>
+                      </button>
+                      <button mat-menu-item (click)="onDeleteTask(task)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Delete</span>
+                      </button>
+                       <button mat-menu-item (click)="loggingEffort(task)">
+                        <mat-icon>schedule</mat-icon>
+                        <span>Logging effort</span>
+                      </button>
+                    </mat-menu>
+                  </div>
+                </div>
+                <div class="task-description">{{ task.description }}</div>
+                <div class="task-details">
+                  <span class="task-estimate">{{ task.estimated_hours }}h</span>
+                  <span class="task-points">{{ task.points }}pts</span>
+                  <span class="task-type">{{ task.type }}</span>
+                </div>
+                <div class="task-completion">
+                  <span class="completion-badge">✓ Completed</span>
+                </div>
+                <div class="task-meta">
+                  <span class="task-assignee">Assigned: {{ task.assign_to }}</span>
+                  <span class="task-date">{{ task.created_at | date : "short" }}</span>
+                </div>
+              </div>
+              <div
+                *ngIf="getTasksByStatus(story.tasks, 'Done').length === 0"
+                class="no-tasks"
+              >
+                No tasks
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

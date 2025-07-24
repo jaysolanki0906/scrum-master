@@ -1,0 +1,101 @@
+<div class="dialog-container">
+  <h2>{{ data.mode }} Project</h2>
+  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="projectName">Project Name</label>
+        <input
+          id="projectName"
+          type="text"
+          [disabled]="data.mode=='View'"
+          formControlName="projectName"
+          placeholder="Enter project name"
+        />
+        <div class="field-error" *ngIf="projectForm.get('projectName')?.touched && projectForm.get('projectName')?.invalid">
+          <span *ngIf="projectForm.get('projectName')?.errors?.['required']">Project Name is required.</span>
+          <span *ngIf="projectForm.get('projectName')?.errors?.['minlength']">Minimum length is {{ projectForm.get('projectName')?.errors?.['minlength'].requiredLength }}.</span>
+          <span *ngIf="projectForm.get('projectName')?.errors?.['maxlength']">Maximum length is {{ projectForm.get('projectName')?.errors?.['maxlength'].requiredLength }}.</span>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-field">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          rows="3"
+          [disabled]="data.mode=='View'"
+          placeholder="Enter project description"
+        ></textarea>
+        <div class="field-error" *ngIf="projectForm.get('description')?.touched && projectForm.get('description')?.invalid">
+          <span *ngIf="projectForm.get('description')?.errors?.['required']">Description is required.</span>
+          <span *ngIf="projectForm.get('description')?.errors?.['minlength']">Minimum length is {{ projectForm.get('description')?.errors?.['minlength'].requiredLength }}.</span>
+          <span *ngIf="projectForm.get('description')?.errors?.['maxlength']">Maximum length is {{ projectForm.get('description')?.errors?.['maxlength'].requiredLength }}.</span>
+        </div>
+      </div>
+
+      <!-- Date Fields -->
+      <div class="date-fields">
+        <div class="date-field">
+          <label for="startDate">Start Date</label>
+          <input
+            type="date"
+            id="startDate"
+            [disabled]="data.mode=='View'"
+            formControlName="startDate"
+            [max]="minDate | date : 'yyyy-MM-dd'"
+            placeholder="Select start date"
+          />
+          <div class="field-error" *ngIf="projectForm.get('startDate')?.touched && projectForm.get('startDate')?.invalid">
+            <span *ngIf="projectForm.get('startDate')?.errors?.['required']">Start Date is required.</span>
+            <!-- Add other date errors if needed -->
+          </div>
+        </div>
+        <div class="date-field">
+          <label for="endDate">End Date</label>
+          <input
+            type="date"
+            id="endDate"
+            [disabled]="data.mode=='View'"
+            formControlName="endDate"
+            [min]="minDate | date : 'yyyy-MM-dd'"
+            placeholder="Select end date"
+          />
+          <div class="field-error" *ngIf="projectForm.get('endDate')?.touched && projectForm.get('endDate')?.invalid">
+            <span *ngIf="projectForm.get('endDate')?.errors?.['required']">End Date is required.</span>
+            <!-- Add other date errors if needed -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Owner -->
+      <div class="form-field">
+        <label for="owner">Owner</label>
+        <input
+          id="owner"
+          type="text"
+          [disabled]="data.mode=='View'"
+          formControlName="owner"
+          placeholder="Project owner"
+        />
+        <div class="field-error" *ngIf="projectForm.get('owner')?.touched && projectForm.get('owner')?.invalid">
+          <span *ngIf="projectForm.get('owner')?.errors?.['required']">Owner is required.</span>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" (click)="onCancel()">Cancel</button>
+      <button
+      *ngIf="data.mode!=='View'"
+        type="submit"
+        [ngClass]="'bg-primary'"
+        [disabled]="projectForm.invalid"
+      >
+        <span>
+          {{ data.mode }}
+        </span>
+      </button>
+    </div>
+  </form>
+</div>

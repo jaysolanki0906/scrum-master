@@ -1,0 +1,143 @@
+.add-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.action-btn.view {
+  background: transparent;
+  border: 2px solid #333435;
+  color: #3e3f41;
+  border-radius: 0.75rem;
+  padding: 0.5rem 1.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
+  outline: none;
+  box-shadow: none;
+
+  &:hover, &:focus {
+    border-color: #1d4ed8;
+    color: #1d4ed8;
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+  }
+}
+.table-container {
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin: 1rem;
+}
+.action-btn.edit
+{
+  color:#3b82f6;
+  border: 1px solid #3b82f6;
+}
+.action-btn.edit:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  background-color: #eff6ff;
+}
+.action-btn.delete
+{
+  color:#c11b1b;
+}
+.action-btn.delete:hover {
+  border-color: #f63b6d;
+  color: #f63b89;
+  background-color: #eff6ff;
+}
+.action-btn.view:hover {
+  border-color: #6b7280;
+  color: #374151;
+  background-color: #f3f4f6;
+}
+
+.project-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  th {
+    text-align: left;
+    padding: 1rem;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 2px solid #f3f4f6;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  td {
+    padding: 1rem;
+    color: #4b5563;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.875rem;
+    
+    &:first-child {
+      font-weight: 500;
+      color: #1f2937;
+    }
+  }
+
+  tr {
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #f9fafb;
+    }
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .action-btn {
+    padding: 0.5rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #f3f4f6;
+    }
+
+    i {
+      font-size: 0.875rem;
+    }
+
+    &.edit i {
+      color: #3b82f6;
+    }
+
+    &.delete i {
+      color: #ef4444;
+    }
+
+    &.view i {
+      color: #10b981;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .table-container {
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+  .project-table {
+    th, td {
+      padding: 0.75rem;
+    }
+  }
+}

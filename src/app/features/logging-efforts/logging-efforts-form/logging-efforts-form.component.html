@@ -1,0 +1,113 @@
+<div class="dialog-container">
+  <h2>{{ data.mode }} Logging Effort</h2>
+
+  <div class="dialog-scroll">
+    <form [formGroup]="effortForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <!-- Date -->
+        <div class="form-field">
+          <label for="date">Date</label>
+          <input
+            type="date"
+            id="date"
+            [disabled]="data.mode === 'View'"
+            formControlName="date"
+          />
+          <div
+            class="field-error"
+            *ngIf="
+              effortForm.get('date')?.touched && effortForm.get('date')?.invalid
+            "
+          >
+            <span *ngIf="effortForm.get('date')?.errors?.['required']"
+              >Date is required.</span
+            >
+          </div>
+        </div>
+
+        <!-- Hours Spent -->
+        <div class="form-field">
+          <label for="hours_spent">Hours Spent</label>
+          <input
+  type="number"
+  id="hours_spent"
+  [disabled]="data.mode === 'View'"
+  formControlName="hours_spent"
+  (keydown)="preventInvalidKeys($event)"
+/>
+
+
+          <div
+            class="field-error"
+            *ngIf="
+              effortForm.get('hours_spent')?.touched &&
+              effortForm.get('hours_spent')?.invalid
+            "
+          >
+            <span *ngIf="effortForm.get('hours_spent')?.errors?.['required']"
+              >Hours spent is required.</span
+            >
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-field">
+          <label for="description">Description</label>
+          <textarea
+            id="description"
+            rows="3"
+            [disabled]="data.mode === 'View'"
+            formControlName="description"
+          ></textarea>
+          <div
+            class="field-error"
+            *ngIf="
+              effortForm.get('description')?.touched &&
+              effortForm.get('description')?.invalid
+            "
+          >
+            <span *ngIf="effortForm.get('description')?.errors?.['required']"
+              >Description is required.</span
+            >
+          </div>
+        </div>
+
+        <!-- Logged By -->
+        <div class="form-field">
+          <label for="logged_by">Logged By</label>
+          <select
+            id="logged_by"
+            [disabled]="data.mode === 'View'"
+            formControlName="logged_by"
+          >
+            <option *ngFor="let emp of employeeList" [value]="emp.id">
+              {{ emp.name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Task -->
+        <div class="form-field">
+          <label for="task_id">Task</label>
+          <select
+            id="task_id"
+            [disabled]="data.mode === 'View'"
+            formControlName="task_id"
+          >
+            <option *ngFor="let task of taskList" [value]="task.id">
+              {{ task.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button type="button" (click)="onCancel()">Cancel</button>
+        <button *ngIf="data.mode !== 'View'" type="submit" class="bg-primary">
+          {{ data.mode }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

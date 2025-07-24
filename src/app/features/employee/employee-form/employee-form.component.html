@@ -1,0 +1,85 @@
+<div class="dialog-container">
+  <h2>{{ data.mode }} Employee</h2>
+  <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+    <div class="form-grid">
+      
+      <!-- Name -->
+      <div class="form-field">
+        <label for="name">Name</label>
+        <input
+          id="name"
+          type="text"
+          [disabled]="data.mode === 'View'"
+          formControlName="name"
+          placeholder="Enter employee name"
+        />
+        <div class="field-error" *ngIf="employeeForm.get('name')?.touched && employeeForm.get('name')?.invalid">
+          <span *ngIf="employeeForm.get('name')?.errors?.['required']">Name is required.</span>
+          <span *ngIf="employeeForm.get('name')?.errors?.['minlength']">Minimum length is {{ employeeForm.get('name')?.errors?.['minlength'].requiredLength }}.</span>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          [disabled]="data.mode === 'View'"
+          formControlName="email"
+          placeholder="Enter email"
+        />
+        <div class="field-error" *ngIf="employeeForm.get('email')?.touched && employeeForm.get('email')?.invalid">
+          <span *ngIf="employeeForm.get('email')?.errors?.['required']">Email is required.</span>
+          <span *ngIf="employeeForm.get('email')?.errors?.['email']">Enter a valid email address.</span>
+        </div>
+      </div>
+
+      <!-- Phone Number -->
+      <div class="form-field">
+        <label for="phone">Phone Number</label>
+        <input
+          id="phone"
+          type="tel"
+          [disabled]="data.mode === 'View'"
+          formControlName="phoneNumber"
+           maxlength="10"
+          placeholder="Enter phone number"
+        />
+        <div class="field-error" *ngIf="employeeForm.get('phone')?.touched && employeeForm.get('phone')?.invalid">
+          <span *ngIf="employeeForm.get('phone')?.errors?.['required']">Phone number is required.</span>
+          <span *ngIf="employeeForm.get('phone')?.errors?.['pattern']">Enter a valid phone number.</span>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-field">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          [disabled]="data.mode === 'View'"
+          formControlName="password"
+          placeholder="Enter password"
+        />
+        <div class="field-error" *ngIf="employeeForm.get('password')?.touched && employeeForm.get('password')?.invalid">
+          <span *ngIf="employeeForm.get('password')?.errors?.['required']">Password is required.</span>
+          <span *ngIf="employeeForm.get('password')?.errors?.['minlength']">Minimum length is {{ employeeForm.get('password')?.errors?.['minlength'].requiredLength }}.</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="actions">
+      <button type="button" (click)="onCancel()">Cancel</button>
+      <button
+        *ngIf="data.mode !== 'View'"
+        type="submit"
+        [ngClass]="'bg-primary'"
+        
+      >
+        <span>{{ data.mode }}</span>
+      </button>
+    </div>
+  </form>
+</div>

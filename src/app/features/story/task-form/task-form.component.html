@@ -1,0 +1,86 @@
+<div class="dialog-container">
+  <h2>{{ data.mode }} Task</h2>
+ <div class="scrollable-content">
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <div class="form-grid">
+
+      <!-- Title -->
+      <div class="form-field">
+        <label for="title">Title</label>
+        <input id="title" type="text" formControlName="title" placeholder="Enter task title" />
+        <div class="field-error" *ngIf="taskForm.get('title')?.touched && taskForm.get('title')?.invalid">
+          <span *ngIf="taskForm.get('title')?.errors?.['required']">Title is required.</span>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-field">
+        <label for="description">Description</label>
+        <textarea id="description" rows="3" formControlName="description" placeholder="Enter task description"></textarea>
+        <div class="field-error" *ngIf="taskForm.get('description')?.touched && taskForm.get('description')?.invalid">
+          <span *ngIf="taskForm.get('description')?.errors?.['required']">Description is required.</span>
+        </div>
+      </div>
+
+      <!-- Type -->
+      <div class="form-field">
+        <label for="type">Type</label>
+        <select id="type" formControlName="type">
+          <option value="Task">Task</option>
+          <option value="Bug">Bug</option>
+        </select>
+        <div class="field-error" *ngIf="taskForm.get('type')?.touched && taskForm.get('type')?.invalid">
+          <span *ngIf="taskForm.get('type')?.errors?.['required']">Type is required.</span>
+        </div>
+      </div>
+
+      <!-- Assign To -->
+      <div class="form-field">
+        <label for="assign_to">Assigned To</label>
+        <select id="assign_to" formControlName="assign_to">
+          <option *ngFor="let emp of employeeList" [value]="emp.id">{{ emp.name }}</option>
+        </select>
+        <div class="field-error" *ngIf="taskForm.get('assign_to')?.touched && taskForm.get('assign_to')?.invalid">
+          <span *ngIf="taskForm.get('assign_to')?.errors?.['required']">Assignee is required.</span>
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div class="form-field">
+        <label for="status">Status</label>
+        <select id="status" formControlName="status">
+          <option value="Todo">To-do</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Done">Done</option>
+        </select>
+        <div class="field-error" *ngIf="taskForm.get('status')?.touched && taskForm.get('status')?.invalid">
+          <span *ngIf="taskForm.get('status')?.errors?.['required']">Status is required.</span>
+        </div>
+      </div>
+
+      <!-- Points -->
+      <div class="form-field">
+        <label for="points">Points</label>
+        <input id="points" type="number" formControlName="points" placeholder="Enter story points" />
+        <div class="field-error" *ngIf="taskForm.get('points')?.touched && taskForm.get('points')?.invalid">
+          <span *ngIf="taskForm.get('points')?.errors?.['required']">Status is required.</span>
+        </div>
+      </div>
+
+      <!-- Estimated Hours -->
+      <div class="form-field">
+        <label for="estimated_hours">Estimated Hours</label>
+        <input id="estimated_hours" type="number" formControlName="estimated_hours" placeholder="Enter estimated hours" />
+         <div class="field-error" *ngIf="taskForm.get('points')?.touched && taskForm.get('points')?.invalid">
+          <span *ngIf="taskForm.get('points')?.errors?.['required']">Status is required.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="bg-primary" *ngIf="this.data.mode!='View'">{{ data.mode }}</button>
+    </div>
+  </form>
+  </div>
+</div>
