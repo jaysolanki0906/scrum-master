@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -21,6 +21,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { NgDatesModule } from 'ng-dates';
 import { ProductService } from '../../../core/services/product.service';
 import { AlertService } from '../../../core/services/alert.service';
+import { EmployeeService } from '../../../core/services/employee.service';
 
 @Component({
   selector: 'app-project-dialog',
@@ -37,13 +38,15 @@ import { AlertService } from '../../../core/services/alert.service';
   templateUrl: './project-dialog.component.html',
   styleUrl: './project-dialog.component.scss',
 })
-export class ProjectDialogComponent {
+export class ProjectDialogComponent implements OnInit {
   projectForm: FormGroup;
+  employeeList:{id:string,name:string}[]=[]
   minDate: Date = new Date();
 
   constructor(
     private fb: FormBuilder,
     private alert: AlertService,
+    private employee:EmployeeService,
     private productService: ProductService,
     public dialogRef: MatDialogRef<ProjectDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -67,6 +70,29 @@ export class ProjectDialogComponent {
     if (this.data.mode === 'View' || this.data.mode === 'Delete') {
       this.projectForm.disable();
     }
+  }
+  ngOnInit(): void {
+    this.projectForm.get('startDate')?.valueChanges.subscribe((startDate) => {
+    const endDateControl = this.projectForm.get('endDate');
+    const endDate = endDateControl?.value;
+
+    if (endDate && new Date(endDate) < new Date(startDate)) {
+      endDateControl?.setValue(null); 
+    }
+
+    // Re-validate the form
+    this.projectForm.updateValueAndValidity();
+  });
+      this.fetchEmployee();
+  }
+  fetchEmployee()
+  {
+    this.employee.getEmployees().subscribe({
+    next:(res)=>{
+      this.employeeList=res;
+    }
+    });
+    console.log("this is list of owners",this.employeeList);
   }
 
   dateRangeValidator(form: FormGroup) {

@@ -5,7 +5,7 @@
       
       <!-- Name -->
       <div class="form-field">
-        <label for="name">Name</label>
+        <label for="name">Name<span class="required-star">*</span></label>
         <input
           id="name"
           type="text"
@@ -21,7 +21,7 @@
 
       <!-- Email -->
       <div class="form-field">
-        <label for="email">Email</label>
+        <label for="email">Email<span class="required-star">*</span></label>
         <input
           id="email"
           type="email"
@@ -37,7 +37,7 @@
 
       <!-- Phone Number -->
       <div class="form-field">
-        <label for="phone">Phone Number</label>
+        <label for="phone">Phone Number<span class="required-star">*</span></label>
         <input
           id="phone"
           type="tel"
@@ -54,7 +54,7 @@
 
       <!-- Password -->
       <div class="form-field">
-        <label for="password">Password</label>
+        <label for="password">Password<span class="required-star">*</span></label>
         <input
           id="password"
           type="password"
@@ -67,6 +67,23 @@
           <span *ngIf="employeeForm.get('password')?.errors?.['minlength']">Minimum length is {{ employeeForm.get('password')?.errors?.['minlength'].requiredLength }}.</span>
         </div>
       </div>
+      <!-- Role -->
+<div class="form-field">
+  <label for="role">Role<span class="required-star">*</span></label>
+  <select
+    id="role"
+    [disabled]="data.mode === 'View'"
+    formControlName="role"
+  >
+    <option value="" disabled>Select role<span class="required-star">*</span></option>
+    <option value="Admin">Admin</option>
+    <option value="User">User</option>
+  </select>
+  <div class="field-error" *ngIf="employeeForm.get('role')?.touched && employeeForm.get('role')?.invalid">
+    <span *ngIf="employeeForm.get('role')?.errors?.['required']">Role is required.</span>
+  </div>
+</div>
+
 
     </div>
 

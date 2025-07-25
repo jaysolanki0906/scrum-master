@@ -25,6 +25,9 @@ export class SprintTableComponent implements OnInit {
   form!: FormGroup;
   dropdown: projectDropDown[] = [];
   sprintList: any = [];
+  startDate: Date = new Date();
+  endDate: Date = new Date();
+
   dropdownSettingsvar: any = [];
 
   constructor(
@@ -44,40 +47,43 @@ export class SprintTableComponent implements OnInit {
     this.dropdownData();
     this.getSprintData();
     this.changeInDropdown();
+    this.getProjectDate();
   }
-  changeInDropdown()
-  {
-     this.sharedService.selectedProjectId$.subscribe((id) => {
-      console.log('Project ID changed:', id); 
+getProjectDate() {
+  const id=this.sharedService.getSelectedProjectId()||"";
+  this.project.getProjectById(id).subscribe({
+    next:(res)=>{
+      this.startDate=res[0].startDate;
+      this.endDate=res[0].endDate;
+    }
+  })
+}
+  changeInDropdown() {
+    this.sharedService.selectedProjectId$.subscribe((id) => {
+      console.log('Project ID changed:', id);
       if (id) {
         this.getSprintData();
       }
     });
   }
-  
 
   getSprintData() {
-  const selectedProjectId = this.sharedService.getSelectedProjectId();
+    const selectedProjectId = this.sharedService.getSelectedProjectId();
 
-  if (selectedProjectId) {
-    this.sprint.getSprint(selectedProjectId).subscribe({
-      next: (res: any) => {
-        this.sprintList = res;
-        console.log('this.sp', this.sprintList);
-        if (this.sprintList.length > 0) {
-          this.alert.sidePopUp('Sprint data loaded successfully', 'success');
-        } else {
-          this.alert.sidePopUp('No sprint data found', 'info');
-        }
-      },
-      error: () => {
-        this.alert.sidePopUp('Failed to load sprint data', 'error');
-      },
-    });
-  } else {
-    this.alert.sidePopUp('Please select a project from header', 'warning');
+    if (selectedProjectId) {
+      this.sprint.getSprint(selectedProjectId).subscribe({
+        next: (res: any) => {
+          this.sprintList = res;
+          console.log('this.sp', this.sprintList);
+        },
+        error: () => {
+          this.alert.sidePopUp('Failed to load sprint data', 'error');
+        },
+      });
+    } else {
+      this.alert.sidePopUp('Please select a project from header', 'warning');
+    }
   }
-}
 
   dropdownSettings() {
     this.dropdownSettingsvar = {
@@ -95,7 +101,7 @@ export class SprintTableComponent implements OnInit {
     this.dialog
       .open(SprintFormComponent, {
         width: '600px',
-        data: { mode: 'Add' },
+        data: { mode: 'Add',projectStartDate:this.startDate,projectEndDate:this.endDate},
       })
       .afterClosed()
       .subscribe({
@@ -106,7 +112,7 @@ export class SprintTableComponent implements OnInit {
               selectedProject: [
                 {
                   id: res.dropdownid,
-                  projectName:res.dropdownName
+                  projectName: res.dropdownName,
                 },
               ],
             });
@@ -114,7 +120,7 @@ export class SprintTableComponent implements OnInit {
             this.getSprintData();
           }
         },
-      });   
+      });
   }
   onItemSelect(item: any) {
     console.log(item);
@@ -143,23 +149,26 @@ export class SprintTableComponent implements OnInit {
       data: { ...sprint, mode: 'View' },
     });
   }
-  Delete(sprint: Sprint) {
-    this.sprint.deleteSprint(sprint.id).subscribe({
-      next: () => {
-        this.alert.sidePopUp(
-          'Congratulations your sprint is deleted',
-          'success'
-        );
-        this.getSprintData();
-      },
-      error: (error) => {
-        this.alert.sidePopUp(
-          'Call your devloper and tell him to check error in console',
-          'error'
-        );
-        console.log(error);
-      },
-    });
+  async Delete(sprint: Sprint) {
+    const confirmed = await this.alert.confirmDelete();
+    if (confirmed) {
+      this.sprint.deleteSprint(sprint.id).subscribe({
+        next: () => {
+          this.alert.sidePopUp(
+            'Congratulations your sprint is deleted',
+            'success'
+          );
+          this.getSprintData();
+        },
+        error: (error) => {
+          this.alert.sidePopUp(
+            'Call your devloper and tell him to check error in console',
+            'error'
+          );
+          console.log(error);
+        },
+      });
+    }
   }
 
   dropdownData() {

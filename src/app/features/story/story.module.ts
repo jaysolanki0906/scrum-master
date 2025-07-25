@@ -7,10 +7,13 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { LoggingEffortsFormComponent } from '../logging-efforts/logging-efforts-form/logging-efforts-form.component';
+import { LoggingEffortsListComponent } from '../logging-efforts/logging-efforts-list/logging-efforts-list.component';
 
 const routes: Routes = [
   { path: '', component: StoryTableComponent
    },
+   {path:'logging',component:LoggingEffortsListComponent}
 ];
 
 @NgModule({

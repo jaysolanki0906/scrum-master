@@ -3,34 +3,10 @@
 
   <form [formGroup]="sprintForm" (ngSubmit)="onSubmit()">
     <div class="form-grid">
-      <!-- Project ID -->
-      <div class="form-field">
-        <label for="projectId">Project</label>
-        <select
-          id="projectId"
-          formControlName="projectId"
-          [disabled]="data.mode !== 'Add'"
-        >
-          <option *ngFor="let project of dropdown" [value]="project.id">
-            {{ project.projectName }}
-          </option>
-        </select>
-        <div
-          class="field-error"
-          *ngIf="
-            sprintForm.get('projectId')?.touched &&
-            sprintForm.get('projectId')?.invalid
-          "
-        >
-          <span *ngIf="sprintForm.get('projectId')?.errors?.['required']"
-            >Project ID is required.</span
-          >
-        </div>
-      </div>
 
       <!-- Sprint Name -->
       <div class="form-field">
-        <label for="sprintName">Sprint Name</label>
+        <label for="sprintName">Sprint Name<span class="required-star">*</span></label>
         <input
           id="sprintName"
           type="text"
@@ -56,7 +32,7 @@
 
       <!-- Goal -->
       <div class="form-field">
-        <label for="goal">Goal</label>
+        <label for="goal">Goal <span class="required-star">*</span></label>
         <textarea
           id="goal"
           rows="3"
@@ -82,13 +58,14 @@
       <div class="date-fields">
         <!-- Start Date -->
         <div class="date-field">
-          <label for="startDate">Start Date</label>
+          <label for="startDate">Start Date <span class="required-star">*</span></label>
           <input
             type="date"
             id="startDate"
             formControlName="startDate"
             [disabled]="data.mode === 'View'"
-            [min]="formattedToday"
+            [min]="minDate"
+  [max]="maxDate"
             placeholder="Select start date"
           />
           <div
@@ -106,13 +83,14 @@
 
         <!-- End Date -->
         <div class="date-field">
-          <label for="endDate">End Date</label>
+          <label for="endDate">End Date <span class="required-star">*</span></label>
           <input
             type="date"
             id="endDate"
             formControlName="endDate"
             [disabled]="data.mode === 'View'"
-            [min]="sprintForm.get('startDate')?.value"
+            [min]="minDate"
+  [max]="maxDate"
             placeholder="Select end date"
           />
           <div
@@ -131,7 +109,7 @@
 
       <!-- Status -->
       <div class="form-field">
-        <label for="status">Status</label>
+        <label for="status">Status <span class="required-star">*</span></label>
         <select
           id="status"
           formControlName="status"

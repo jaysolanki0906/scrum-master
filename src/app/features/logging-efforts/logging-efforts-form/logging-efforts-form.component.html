@@ -8,11 +8,14 @@
         <div class="form-field">
           <label for="date">Date</label>
           <input
-            type="date"
-            id="date"
-            [disabled]="data.mode === 'View'"
-            formControlName="date"
-          />
+  type="date"
+  id="date"
+  [min]="minDate"
+  [max]="maxDate"
+  [disabled]="data.mode === 'View'"
+  formControlName="date"
+/>
+
           <div
             class="field-error"
             *ngIf="
@@ -29,13 +32,12 @@
         <div class="form-field">
           <label for="hours_spent">Hours Spent</label>
           <input
-  type="number"
-  id="hours_spent"
-  [disabled]="data.mode === 'View'"
-  formControlName="hours_spent"
-  (keydown)="preventInvalidKeys($event)"
-/>
-
+            type="number"
+            id="hours_spent"
+            [disabled]="data.mode === 'View'"
+            formControlName="hours_spent"
+            (keydown)="preventInvalidKeys($event)"
+          />
 
           <div
             class="field-error"

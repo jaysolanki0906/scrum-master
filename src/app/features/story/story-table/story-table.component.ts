@@ -58,22 +58,32 @@ export class StoryTableComponent implements OnInit {
     return tasks.filter((task) => task.status === status);
   }
 
-  getAllSprint() {
-    const id = this.shared.getSelectedProjectId() || '';
-    this.sprint.getSprint(id).subscribe({
-      next: (res: Sprint[]) => {
-        this.sprintList = res;
-        if (res.length > 0) {
-          this.selectedSprint = res[0];
-          this.getAllStory(this.selectedSprint.id.toString());
+ getAllSprint() {
+  const id = this.shared.getSelectedProjectId() || '';
+  const prevSelectedSprintId = this.selectedSprint?.id;
+
+  this.sprint.getSprint(id).subscribe({
+    next: (res: Sprint[]) => {
+      this.sprintList = res;
+
+      if (res.length > 0) {
+        const matchedSprint = res.find(s => s.id === prevSelectedSprintId);
+
+        if (matchedSprint) {
+          this.selectedSprint = matchedSprint;
+        } else {
+          this.selectedSprint = res[0]; 
         }
-      },
-      error: (err) => {
-        this.alert.sidePopUp('Error fetching sprint data', 'error');
-        console.log('this is error in sprint ', err);
-      },
-    });
-  }
+
+        this.getAllStory(this.selectedSprint.id.toString());
+      }
+    },
+    error: (err) => {
+      this.alert.sidePopUp('Error fetching sprint data', 'error');
+      console.log('this is error in sprint ', err);
+    },
+  });
+}
 
   onSprintChange(event: any) {
     console.log('Sprint changed:', this.selectedSprint);
@@ -133,7 +143,8 @@ export class StoryTableComponent implements OnInit {
       });
   }
 
-  deleteDialog(event: Story) {
+  async deleteDialog(event: Story) {
+     const confirmed = await this.alert.confirmDelete();
     this.story.deleteStory(event.id.toString()).subscribe({
       next: () => {
         this.alert.sidePopUp('This record is deleted', 'success');
@@ -158,7 +169,9 @@ export class StoryTableComponent implements OnInit {
       });
   }
 
-  onDeleteTask(t: Task) {
+  async onDeleteTask(t: Task) {
+    const confirmed = await this.alert.confirmDelete();
+    if(confirmed){
     this.task.deleteTask(t.id.toString()).subscribe({
       next: () => {
         this.getAllSprint();
@@ -166,10 +179,10 @@ export class StoryTableComponent implements OnInit {
       error: (err) => {
         console.log('the error while deleting', err);
       },
-    });
+    });}
   }
   loggingEffort(task: Task): void {
-    this.router.navigate(['/logging-efforts'], {
+    this.router.navigate(['scrum-board/logging'], {
       queryParams: { taskId: task.id },
     });
   }

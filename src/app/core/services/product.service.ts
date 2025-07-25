@@ -65,4 +65,13 @@ export class ProductService {
         })
     );
   }
+  getProjectById(id:string)
+  {
+    return from(
+      this.supabaseService.client.from('projects').select('*').eq('id',id).then(({ data,error }) => {
+          if (error) throw error;
+          return data;
+        })
+    );
+  }
 }

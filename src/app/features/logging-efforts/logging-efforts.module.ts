@@ -4,16 +4,12 @@ import { LoggingEffortsListComponent } from './logging-efforts-list/logging-effo
 import { RouterModule, Routes } from '@angular/router';
 import { TruncateWordsPipe } from '../../pipes/truncate-words.pipe';
 
-const routes: Routes = [
-  { path: '', component: LoggingEffortsListComponent },
-];
+
 
 @NgModule({
-  declarations: [LoggingEffortsListComponent],
+  declarations: [],
   imports: [
-    CommonModule,
-    TruncateWordsPipe,
-    RouterModule.forChild(routes),
-  ],exports:[RouterModule]
+   
+  ],exports:[]
 })
 export class LoggingEffortsModule { }

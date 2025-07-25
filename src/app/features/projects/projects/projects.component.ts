@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProductService } from '../../../core/services/product.service';
 import { ProjectDialogComponent } from '../project-dialog/project-dialog.component';
 import { AlertService } from '../../../core/services/alert.service';
+import { Employee } from '../../../core/models/employee.model';
+import { EmployeeService } from '../../../core/services/employee.service';
 
 @Component({
   selector: 'app-projects',
@@ -14,14 +16,37 @@ import { AlertService } from '../../../core/services/alert.service';
 export class ProjectsComponent implements OnInit {
 
   projects:Project[]=[];
+  employeeList:Employee[]=[];
 
   searchText: string = '';
 
-  constructor(private product:ProductService,private dialog: MatDialog,private alert:AlertService) {}
+  constructor(private product:ProductService,
+    private dialog: MatDialog,
+    private alert:AlertService,
+    private employee:EmployeeService,
+  private alertService:AlertService) {}
 
   ngOnInit(): void {
     this.fetchProjects();
+    this.getEmployee();
   }
+ getEmployee() {
+  this.employee.getEmployees().subscribe({
+    next: (res) => {
+      this.employeeList = res;
+      console.log('Employee list loaded:', this.employeeList); 
+    },
+    error: (err) => {
+      console.error('Failed to fetch employees', err);
+    }
+  });
+}
+
+  getOwnerName(id: string): string | null {
+  const emp = this.employeeList.find((e) => String(e.id) === String(id));
+  return emp ? emp.name : null;
+}
+
   fetchProjects()
   {
     this.product.getProjectsData().subscribe({
@@ -47,11 +72,14 @@ export class ProjectsComponent implements OnInit {
     });
   }
 
-  onDelete(project:any) {
+  async onDelete(project:any) {
+    const confirmed = await this.alertService.confirmDelete();
+    if(confirmed){
     this.product.deleteProject(project.id).subscribe({
       next:()=>{this.alert.sidePopUp("Delete happened sucessfully",'success');this.fetchProjects()},
       error:()=>{this.alert.sidePopUp("Error happned while delete",'error')}
-    });
+    });}
+    
   }
 
   add()

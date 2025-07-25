@@ -1,7 +1,7 @@
 // src/app/core/services/employee.service.ts
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
-import { from } from 'rxjs';
+import { catchError, from, map, throwError } from 'rxjs';
 import { Employee } from '../models/employee.model';
 
 @Injectable({
@@ -22,6 +22,23 @@ export class EmployeeService {
         })
     );
   }
+   createSupabaseUser(email: string, password: string) {
+  return from(
+    this.supabaseService.client.auth.signUp({
+      email,
+      password,
+    })
+  ).pipe(
+    map((result) => {
+      if (result.error) throw result.error;
+      const user = result.data?.user;
+      if (!user) throw new Error('User creation failed');
+      return user.id; 
+    }),
+    catchError((err) => throwError(() => err))
+  );
+}
+
 
   updateEmployee(id: string, payload: Employee) {
     return from(
@@ -60,4 +77,26 @@ export class EmployeeService {
         })
     );
   }
+  checkEmployeeCredentials(email: string, password: string) {
+  return from(
+    this.supabaseService.client
+      .from('employee')
+      .select('*')
+      .eq('email', email)
+      .eq('password', password)
+      .then(({ data, error }) => {
+        if (error) throw error;
+        return data; 
+      })
+  );
+}
+getPerticularEmployee(id:string)
+{
+  return from(this.supabaseService.client.from('employee').select('*').eq('id',id).then(({ data, error }) => {
+        if (error) throw error;
+        return data; 
+      })
+  );
+}
+
 }

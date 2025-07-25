@@ -16,6 +16,8 @@ export class HeaderComponent implements OnInit {
   projectList: Project[] = [];
   isMobileMenuOpen = false;
   dropdownOpen = false;
+  role: string | null = null;
+
   constructor(
     private shared: SharedService,
     private project: ProductService,
@@ -23,53 +25,73 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private sharedService: SharedService
   ) {}
+
   ngOnInit(): void {
     this.project.getProjectsData().subscribe({
       next: (res) => {
         this.projectList = res;
-
         const defaultProjectId = this.projectList[0]?.id;
 
         if (defaultProjectId) {
           this.shared.setSelectedProjectId(defaultProjectId.toString());
-          console.log('this.shared.getSelectedProjectId()',this.shared.getSelectedProjectId());
         }
       },
     });
+    this.sharedService.userRole$.subscribe((role) => {
+  this.role = role;
+  console.log('HeaderComponent: role updated to', this.role);
+});
+
+
+    console.log("this is role under the header",this.role);
   }
-closeMobileMenu() {
-  this.isMobileMenuOpen = false;
-}
+
+  
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+  }
+
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
+
   employeeNaviagation() {
     this.router.navigate(['/employee']);
   }
-  passwordChnage() {}
+
+  passwordChnage() {
+    this.router.navigate(['/change-password']);
+  }
+
   storyNaviagation() {
     this.router.navigate(['./scrum-board']);
   }
+
   myProfile() {
     this.router.navigate(['profile']);
   }
+
   sprintNavigate() {
     this.router.navigate(['./sprint']);
   }
+
   dashboardNavigate() {
     this.router.navigate(['dashboard']);
   }
+
   projectNavigate() {
     this.router.navigate(['/projects']);
   }
+
   logout() {
     this.token.clearTokens();
     this.router.navigate(['/login']);
   }
+
   onProjectChange(event: Event): void {
     const selectedId = (event.target as HTMLSelectElement).value;
-    console.log('Selected project ID:', selectedId);
     this.shared.setSelectedProjectId(selectedId);
-    localStorage.setItem('selectedProjectId', selectedId);
   }
 }
+

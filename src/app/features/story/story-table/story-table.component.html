@@ -120,7 +120,12 @@
                 <div class="task-details">
                   <span class="task-estimate">{{ task.estimated_hours }}h</span>
                   <span class="task-points">{{ task.points }}pts</span>
-                  <span class="task-type">{{ task.type }}</span>
+                  <span
+  class="badge"
+  [ngClass]="task.type === 'Bug' ? 'bg-danger' : 'bg-secondary '"
+>
+  {{ task.type }}
+</span>
                 </div>
                 <div class="task-meta">
                   <span class="task-assignee">Assigned: {{ task.assign_to }}</span>
@@ -181,7 +186,12 @@
                 <div class="task-details">
                   <span class="task-estimate">{{ task.estimated_hours }}h</span>
                   <span class="task-points">{{ task.points }}pts</span>
-                  <span class="task-type">{{ task.type }}</span>
+                  <span
+  class="badge"
+  [ngClass]="task.type === 'Bug' ? 'bg-danger' : 'bg-secondary '"
+>
+  {{ task.type }}
+</span>
                 </div>
                 <div class="task-meta">
                   <span class="task-assignee">Assigned: {{ task.assign_to }}</span>
@@ -241,7 +251,13 @@
                 <div class="task-details">
                   <span class="task-estimate">{{ task.estimated_hours }}h</span>
                   <span class="task-points">{{ task.points }}pts</span>
-                  <span class="task-type">{{ task.type }}</span>
+                  <span
+  class="badge"
+  [ngClass]="task.type === 'Bug' ? 'bg-danger' : 'bg-secondary '"
+>
+  {{ task.type }}
+</span>
+
                 </div>
                 <div class="task-completion">
                   <span class="completion-badge">✓ Completed</span>

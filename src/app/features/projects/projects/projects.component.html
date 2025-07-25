@@ -27,7 +27,7 @@
         </td>
         <td>{{ project.startDate | date : "yyyy-MM-dd" }}</td>
         <td>{{ project.endDate | date : "yyyy-MM-dd" }}</td>
-        <td>{{ project.owner }}</td>
+        <td>{{ getOwnerName(project.owner) || project.owner }} </td>
         <td class="actions">
           <div class="action-btn-group">
             <button

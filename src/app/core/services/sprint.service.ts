@@ -24,6 +24,23 @@ export class SprintService {
     );
   }
 
+  // ✅ Get sprint by ID
+getSprintById(sprintId: string | number) {
+  return from(
+    this.supabaseService.client
+      .from('sprint')
+      .select('*')
+      .eq('id', sprintId)
+      .single() // ensures only one object is returned
+      .then(({ data, error }) => {
+        if (error) throw error;
+        console.log('Sprint by ID:', data);
+        return data;
+      })
+  );
+}
+
+
   // ✅ Update sprint by ID
   updateSprint(sprintId: number, updatedData: Sprint) {
     return from(

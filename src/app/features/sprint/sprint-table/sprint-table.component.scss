@@ -203,6 +203,12 @@ h2, h5 {
     }
   }
 }
+.no-data-message {
+  text-align: center;
+  margin-top: 20px;
+  color: #999;
+  font-size: 16px;
+}
 
 // Responsive Design
 @media (max-width: 768px) {

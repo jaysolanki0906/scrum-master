@@ -52,6 +52,7 @@ export class EmployeeFormComponent {
         data?.password || '',
         [Validators.required, Validators.minLength(6)],
       ],
+       role: [data?.role || '', [Validators.required]],
     });
 
     if (this.data.mode === 'View' ) {
@@ -61,7 +62,9 @@ export class EmployeeFormComponent {
   }
 
   onSubmit(): void {
-    if (this.employeeForm.invalid) return;
+    if (this.employeeForm.invalid){ 
+      this.employeeForm.markAllAsTouched();
+      return};
 
     const payload = this.employeeForm.value;
 
@@ -76,15 +79,26 @@ export class EmployeeFormComponent {
         },
       });
     } else if (this.data.mode === 'Add') {
-      this.employeeService.addEmployee(payload).subscribe({
-        next: () => {
-          this.alert.sidePopUp('Employee added successfully', 'success');
-          this.dialogRef.close({ success: true });
-        },
-        error: (err) => {
-          this.alert.sidePopUp(`Addition failed: ${err}`, 'error');
-        },
-      });
+      this.employeeService.createSupabaseUser(this.employeeForm.value.email, this.employeeForm.value.password).subscribe({
+      next: (userId: string) => {
+        const payload = {
+          ...this.employeeForm.value,
+          refrences: userId,
+        };
+        this.employeeService.addEmployee(payload).subscribe({
+          next: () => {
+            this.alert.sidePopUp('Employee added successfully', 'success');
+            this.dialogRef.close({ success: true });
+          },
+          error: (err) => {
+            this.alert.sidePopUp(`Employee addition failed: ${err.message}`, 'error');
+          },
+        });
+      },
+      error: (err) => {
+        this.alert.sidePopUp(`User creation failed: ${err.message}`, 'error');
+      }
+    });
     }
   }
 

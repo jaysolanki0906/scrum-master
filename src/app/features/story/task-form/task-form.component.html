@@ -6,7 +6,7 @@
 
       <!-- Title -->
       <div class="form-field">
-        <label for="title">Title</label>
+        <label for="title">Title<span class="required-star">*</span></label>
         <input id="title" type="text" formControlName="title" placeholder="Enter task title" />
         <div class="field-error" *ngIf="taskForm.get('title')?.touched && taskForm.get('title')?.invalid">
           <span *ngIf="taskForm.get('title')?.errors?.['required']">Title is required.</span>
@@ -15,7 +15,7 @@
 
       <!-- Description -->
       <div class="form-field">
-        <label for="description">Description</label>
+        <label for="description">Description<span class="required-star">*</span></label>
         <textarea id="description" rows="3" formControlName="description" placeholder="Enter task description"></textarea>
         <div class="field-error" *ngIf="taskForm.get('description')?.touched && taskForm.get('description')?.invalid">
           <span *ngIf="taskForm.get('description')?.errors?.['required']">Description is required.</span>
@@ -24,7 +24,7 @@
 
       <!-- Type -->
       <div class="form-field">
-        <label for="type">Type</label>
+        <label for="type">Type<span class="required-star">*</span></label>
         <select id="type" formControlName="type">
           <option value="Task">Task</option>
           <option value="Bug">Bug</option>
@@ -36,7 +36,7 @@
 
       <!-- Assign To -->
       <div class="form-field">
-        <label for="assign_to">Assigned To</label>
+        <label for="assign_to">Assigned To<span class="required-star">*</span></label>
         <select id="assign_to" formControlName="assign_to">
           <option *ngFor="let emp of employeeList" [value]="emp.id">{{ emp.name }}</option>
         </select>
@@ -47,7 +47,7 @@
 
       <!-- Status -->
       <div class="form-field">
-        <label for="status">Status</label>
+        <label for="status">Status<span class="required-star">*</span></label>
         <select id="status" formControlName="status">
           <option value="Todo">To-do</option>
           <option value="In Progress">In Progress</option>
@@ -60,7 +60,7 @@
 
       <!-- Points -->
       <div class="form-field">
-        <label for="points">Points</label>
+        <label for="points">Points<span class="required-star">*</span></label>
         <input id="points" type="number" formControlName="points" placeholder="Enter story points" />
         <div class="field-error" *ngIf="taskForm.get('points')?.touched && taskForm.get('points')?.invalid">
           <span *ngIf="taskForm.get('points')?.errors?.['required']">Status is required.</span>
@@ -69,7 +69,7 @@
 
       <!-- Estimated Hours -->
       <div class="form-field">
-        <label for="estimated_hours">Estimated Hours</label>
+        <label for="estimated_hours">Estimated Hours<span class="required-star">*</span></label>
         <input id="estimated_hours" type="number" formControlName="estimated_hours" placeholder="Enter estimated hours" />
          <div class="field-error" *ngIf="taskForm.get('points')?.touched && taskForm.get('points')?.invalid">
           <span *ngIf="taskForm.get('points')?.errors?.['required']">Status is required.</span>

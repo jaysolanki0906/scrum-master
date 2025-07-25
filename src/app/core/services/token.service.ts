@@ -25,4 +25,22 @@ export class TokenService {
     localStorage.removeItem(this.ACCESS_TOKEN_KEY);
     localStorage.removeItem(this.REFRESH_TOKEN_KEY);
   }
+  getSession() {
+  const accessToken = localStorage.getItem(this.ACCESS_TOKEN_KEY);
+  const refreshToken = localStorage.getItem(this.REFRESH_TOKEN_KEY);
+
+  if (!accessToken) return null;
+
+  const user = this.parseJwt(accessToken); 
+  return { accessToken, refreshToken, user };
+}
+
+private parseJwt(token: string): any {
+  try {
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch (e) {
+    return null;
+  }
+}
+
 }

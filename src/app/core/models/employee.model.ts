@@ -4,4 +4,5 @@ export interface Employee {
     email:string,
     phoneNumber:number,
     password:string,
+    role:string,
 }

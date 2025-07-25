@@ -5,10 +5,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { LoggingEffortService } from '../../../core/services/logging-effort.service';
 import { LoggingEffortsFormComponent } from '../logging-efforts-form/logging-efforts-form.component';
 import { ActivatedRoute } from '@angular/router';
+import { TruncateWordsPipe } from '../../../pipes/truncate-words.pipe';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-logging-efforts-list',
-  standalone:false,
+  imports:[  CommonModule,
+    TruncateWordsPipe],
   templateUrl: './logging-efforts-list.component.html',
   styleUrl: './logging-efforts-list.component.scss'
 })

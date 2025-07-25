@@ -17,4 +17,16 @@ export class AlertService {
     toast: true,
   });
 }
+confirmDelete(): Promise<boolean> {
+    return Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to delete this record?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+    }).then((result) => result.isConfirmed);
+  }
 }
