@@ -15,10 +15,10 @@
     </thead>
     <tbody>
       <tr *ngFor="let project of projects">
-        <td class="truncate" [attr.data-full-text]="project.projectName">
+        <td class="truncate" >
           {{ project.projectName }}
         </td>
-        <td class="truncate" [attr.data-full-text]="project.description">
+        <td class="truncate" >
           {{
             project.description
               ? (project.description | truncateWords : 4)
@@ -90,4 +90,8 @@
       </tr>
     </tbody>
   </table>
+  <div *ngIf="projects.length === 0" class="no-story-message">
+    There is no data.
+  </div>
+
 </div>

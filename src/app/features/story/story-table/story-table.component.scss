@@ -921,6 +921,13 @@
     }
   }
 }
+.no-story-message {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  margin: 2rem 0;
+  font-weight: 500;
+}
 
 // Dark mode support (optional)
 @media (prefers-color-scheme: dark) {

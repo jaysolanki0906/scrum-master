@@ -48,39 +48,39 @@ export class SharedService {
   isUser(): boolean {
     return this.userRole.value === 'user';
   }
-getAccessibleModules(): string[] {
-  const role = this.userRole.value?.toLowerCase();
+  getAccessibleModules(): string[] {
+    const role = this.userRole.value?.toLowerCase();
 
-  let values: string[] = [];
+    let values: string[] = [];
 
-  console.log("This is role in shared service", role);
+    console.log("This is role in shared service", role);
 
-  if (role === 'admin') {
-    values = [
-      'dashboard',
-      'projects',
-      'sprint',
-      'scrum-board',
-      'employee',
-      'profile',
-      'change-password',
-      'logging',
-      'logout'
-    ];
-  } else if (role === 'user') {
-    values = [
-      'dashboard',
-      'scrum-board',
-      'profile',
-      'change-password',
-      'logout',
-      'logging',
-    ];
+    if (role === 'admin') {
+      values = [
+        'dashboard',
+        'projects',
+        'sprint',
+        'scrum-board',
+        'employee',
+        'profile',
+        'change-password',
+        'logging',
+        'logout'
+      ];
+    } else if (role === 'user') {
+      values = [
+        'dashboard',
+        'scrum-board',
+        'profile',
+        'change-password',
+        'logout',
+        'logging',
+      ];
+    }
+
+    console.log("Accessible modules:", values);
+    return values;
   }
-
-  console.log("Accessible modules:", values);
-  return values;
-}
 
   clearSession() {
     this.userId.next(null);
@@ -88,30 +88,30 @@ getAccessibleModules(): string[] {
     this.selectedProjectId.next(null);
   }
   // shared.service.ts (new method)
-// async initializeUserFromSupabase(supabase: SupabaseClient): Promise<boolean> {
-//   const { data: { session }, error } = await supabase.auth.getSession();
-  
-//   if (!session || error) {
-//     return false;
-//   }
+  // async initializeUserFromSupabase(supabase: SupabaseClient): Promise<boolean> {
+  //   const { data: { session }, error } = await supabase.auth.getSession();
 
-//   const user = session.user;
-//   const employeeId =  user.id;
+  //   if (!session || error) {
+  //     return false;
+  //   }
 
-//   const { data: employee, error: empErr } = await supabase
-//     .from('employee')
-//     .select('*')
-//     .eq('refrences', employeeId)
-//     .single();
+  //   const user = session.user;
+  //   const employeeId =  user.id;
 
-//   if (empErr || !employee) {
-//     return false;
-//   }
+  //   const { data: employee, error: empErr } = await supabase
+  //     .from('employee')
+  //     .select('*')
+  //     .eq('refrences', employeeId)
+  //     .single();
 
-//   this.setUserId(employee.id);
-//   this.setUserRole(employee.role);
-//   return true;
-// }
+  //   if (empErr || !employee) {
+  //     return false;
+  //   }
 
-  
+  //   this.setUserId(employee.id);
+  //   this.setUserRole(employee.role);
+  //   return true;
+  // }
+
+
 }

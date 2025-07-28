@@ -38,7 +38,6 @@
         </div>
       </div>
 
-      <!-- Description -->
       <div class="form-field">
         <label for="description"
           >Description <span class="required-star">*</span></label
@@ -75,7 +74,6 @@
         </div>
       </div>
 
-      <!-- Date Fields -->
       <div class="date-fields">
         <div class="date-field">
           <label for="startDate"
@@ -99,7 +97,7 @@
             <span *ngIf="projectForm.get('startDate')?.errors?.['required']"
               >Start Date is required.</span
             >
-            <!-- Add other date errors if needed -->
+
           </div>
         </div>
         <div class="date-field">
@@ -124,12 +122,10 @@
             <span *ngIf="projectForm.get('endDate')?.errors?.['required']"
               >End Date is required.</span
             >
-            <!-- Add other date errors if needed -->
           </div>
         </div>
       </div>
 
-      <!-- Owner -->
       <div class="form-field">
         <label for="owner">Owner <span class="required-star">*</span></label>
         <select

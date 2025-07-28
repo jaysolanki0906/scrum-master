@@ -3,7 +3,6 @@
     <button class="action-btn view" title="Add" (click)="AddSprint()">Add Sprint</button>
   </div>
   
-  <!-- Sprint Table or No Data Message -->
   <div *ngIf="sprintList.length > 0; else noData">
     <div class="table-container">
       <table class="project-table">
@@ -54,7 +53,6 @@
     </div>
   </div>
 
-  <!-- No Data Template -->
   <ng-template #noData>
     <div class="no-data-message">
       <p>No sprints found.</p>

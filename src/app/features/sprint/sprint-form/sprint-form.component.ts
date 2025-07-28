@@ -63,10 +63,10 @@ export class SprintFormComponent implements OnInit {
     });
   }
   formatDate(date: any): string {
-  if (!date) return ''; // return empty string or handle as needed
+  if (!date) return ''; 
 
   const parsedDate = new Date(date);
-  if (isNaN(parsedDate.getTime())) return ''; // invalid date
+  if (isNaN(parsedDate.getTime())) return ''; 
 
   return parsedDate.toISOString().split('T')[0];
 }

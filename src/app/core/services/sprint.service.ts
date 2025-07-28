@@ -9,7 +9,6 @@ import { Sprint } from '../models/sprint.model';
 export class SprintService {
   constructor(private supabaseService: SupabaseService) {}
 
-  // ✅ Get sprints by projectId
   getSprint(projectId: string) {
     return from(
       this.supabaseService.client
@@ -24,14 +23,13 @@ export class SprintService {
     );
   }
 
-  // ✅ Get sprint by ID
 getSprintById(sprintId: string | number) {
   return from(
     this.supabaseService.client
       .from('sprint')
       .select('*')
       .eq('id', sprintId)
-      .single() // ensures only one object is returned
+      .single() 
       .then(({ data, error }) => {
         if (error) throw error;
         console.log('Sprint by ID:', data);
@@ -41,7 +39,6 @@ getSprintById(sprintId: string | number) {
 }
 
 
-  // ✅ Update sprint by ID
   updateSprint(sprintId: number, updatedData: Sprint) {
     return from(
       this.supabaseService.client
@@ -57,7 +54,6 @@ getSprintById(sprintId: string | number) {
     );
   }
 
-  // ✅ Add new sprint
   addSprint(sprintData: Sprint) {
     return from(
       this.supabaseService.client
@@ -72,7 +68,6 @@ getSprintById(sprintId: string | number) {
     );
   }
 
-  // ✅ Delete sprint by ID
   deleteSprint(sprintId: number) {
     return from(
       this.supabaseService.client

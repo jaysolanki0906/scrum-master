@@ -30,8 +30,8 @@ export class StoryFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA)
     public data: {
       mode: 'Add' | 'Edit' | 'View';
-      id: number; // sprintId
-      storyData?: Story; // optional, for Edit/View
+      id: number; 
+      storyData?: Story; 
     }
   ) {}
 

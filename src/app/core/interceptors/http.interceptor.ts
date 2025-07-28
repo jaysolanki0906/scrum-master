@@ -1,45 +1,53 @@
 import { inject } from '@angular/core';
-import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
-import { throwError } from 'rxjs';
-import { catchError, switchMap, finalize } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
-import { TokenService } from '../services/token.service';
+import {
+  HttpInterceptorFn,
+  HttpErrorResponse,
+  HttpRequest,
+  HttpHandler,
+} from '@angular/common/http';
+import { catchError, finalize, switchMap, throwError, from } from 'rxjs';
+import { SupabaseService } from '../services/supabase.service';
 import { Router } from '@angular/router';
+import { LoaderService } from '../services/loader.service'; 
 
-export const httpInterceptor: HttpInterceptorFn = (req, next) => {
-  const tokenService = inject(TokenService);
-  const authService = inject(AuthService);
+export const httpInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: import('@angular/common/http').HttpHandlerFn) => {
+  const supabase = inject(SupabaseService).client;
   const router = inject(Router);
- 
+  const loaderService = inject(LoaderService); 
 
-  const accessToken = tokenService.getAccessToken();
-  const clonedReq = accessToken
-    ? req.clone({ setHeaders: { Authorization: `Bearer ${accessToken}` } })
-    : req;
+  loaderService.show(); 
 
-  return next(clonedReq).pipe(
-    catchError((error: HttpErrorResponse) => {
-      if (error.status === 401) {
-        return authService.refreshToken().pipe(
-          switchMap((res: any) => {
-            tokenService.saveAcessToken(res.access_token);
-            const retryReq = req.clone({
-              setHeaders: { Authorization: `Bearer ${res.access_token}` }
-            });
-            return next(retryReq);
-          }),
-          catchError((refreshError) => {
-            tokenService.clearTokens();
-            router.navigate(['/login']);
-            return throwError(() => refreshError);
-          }),
-          finalize(() => { 
-          })
-        );
+  return from(supabase.auth.getSession()).pipe(
+    switchMap(({ data, error }) => {
+      if (error || !data?.session?.access_token) {
+        console.warn('No valid session found. Redirecting to login.');
+        loaderService.hide(); 
+        router.navigate(['/login']);
+        return throwError(() => new Error('Session invalid'));
       }
-      return throwError(() => error);
+
+      const token = data.session.access_token;
+      const authReq = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return next(authReq).pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 401) {
+            console.warn('Token expired or unauthorized. Logging out.');
+            supabase.auth.signOut();
+            router.navigate(['/login']);
+          }
+          return throwError(() => error);
+        }),
+        finalize(() => loaderService.hide()) 
+      );
     }),
-    finalize(() => {
+    catchError((err) => {
+      loaderService.hide();
+      return throwError(() => err);
     })
   );
 };

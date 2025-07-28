@@ -19,7 +19,8 @@ export class LoggingEffortsListComponent {
 loggingEfforts: LoggingEffort[] = [];
 employeeMap: { [key: number]: string } = {};
 taskMap: { [key: number]: string } = {};
-id:any;
+id:string='';
+sprintId:string='';
 
   constructor(
     private loggingEffortService: LoggingEffortService,
@@ -32,6 +33,7 @@ id:any;
 
      this.route.queryParamMap.subscribe(params => {
   this.id = params.get('taskId') || '';
+  this.sprintId=params.get('sprintId')||"";
 });
 console.log(this.id);
 
@@ -77,7 +79,7 @@ console.log(this.id);
   add(): void {
     this.dialog.open(LoggingEffortsFormComponent,{
       width:'600px',
-      data:{mode:'Add',employeeMap:this.employeeMap,taskMap:this.taskMap,taskid:this.id}
+      data:{mode:'Add',employeeMap:this.employeeMap,taskMap:this.taskMap,taskid:this.id,sprintId:this.sprintId}
     }).afterClosed().subscribe({
       next:(res)=>{if(res.status){
         this.fetchEfforts();
@@ -89,7 +91,7 @@ console.log(this.id);
   edit(effort: LoggingEffort): void {
     this.dialog.open(LoggingEffortsFormComponent,{
       width:'600px',
-      data:{mode:'Edit',employeeMap:this.employeeMap,taskMap:this.taskMap,taskid:this.id,effortData:effort}
+      data:{mode:'Edit',employeeMap:this.employeeMap,taskMap:this.taskMap,taskid:this.id,effortData:effort,sprintId:this.sprintId}
     }).afterClosed().subscribe({
       next:(res)=>{if(res.status){
 

@@ -14,8 +14,6 @@ export class authGuard implements CanActivate {
   ): boolean {
     const accessToken = localStorage.getItem('access_token');
     const refreshToken = localStorage.getItem('refresh_token');
-    const userId = this.sharedService.getUserId();
-    const userRole = this.sharedService.getUserRole();
     if (accessToken && refreshToken) {
       return true;
     } else {

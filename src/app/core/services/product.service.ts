@@ -9,7 +9,6 @@ import { Project } from '../models/project.model';
 export class ProductService {
   constructor(private supabaseService: SupabaseService) {}
 
-  // ✅ Get all projects
   getProjectsData(): Observable<Project[]> {
     return from(
       this.supabaseService.client
@@ -23,7 +22,6 @@ export class ProductService {
     );
   }
 
-  // ✅ Add a new project
   addProject(project: Project): Observable<Project> {
     return from(
       this.supabaseService.client
@@ -37,7 +35,6 @@ export class ProductService {
     );
   }
 
-  // ✅ Edit a project
   editProject(id: number, payload: Partial<Project>): Observable<Project> {
     return from(
       this.supabaseService.client
@@ -52,7 +49,6 @@ export class ProductService {
     );
   }
 
-  // ✅ Delete a project
   deleteProject(id: number): Observable<boolean> {
     return from(
       this.supabaseService.client

@@ -4,17 +4,16 @@
   <div class="dialog-scroll">
     <form [formGroup]="effortForm" (ngSubmit)="onSubmit()">
       <div class="form-grid">
-        <!-- Date -->
         <div class="form-field">
           <label for="date">Date</label>
           <input
-  type="date"
-  id="date"
-  [min]="minDate"
-  [max]="maxDate"
-  [disabled]="data.mode === 'View'"
-  formControlName="date"
-/>
+            type="date"
+            id="date"
+            [min]="minDate"
+            [max]="maxDate"
+            [disabled]="data.mode === 'View'"
+            formControlName="date"
+          />
 
           <div
             class="field-error"
@@ -28,7 +27,6 @@
           </div>
         </div>
 
-        <!-- Hours Spent -->
         <div class="form-field">
           <label for="hours_spent">Hours Spent</label>
           <input
@@ -52,7 +50,6 @@
           </div>
         </div>
 
-        <!-- Description -->
         <div class="form-field">
           <label for="description">Description</label>
           <textarea
@@ -74,7 +71,6 @@
           </div>
         </div>
 
-        <!-- Logged By -->
         <div class="form-field">
           <label for="logged_by">Logged By</label>
           <select
@@ -88,7 +84,6 @@
           </select>
         </div>
 
-        <!-- Task -->
         <div class="form-field">
           <label for="task_id">Task</label>
           <select
@@ -103,7 +98,6 @@
         </div>
       </div>
 
-      <!-- Actions -->
       <div class="actions">
         <button type="button" (click)="onCancel()">Cancel</button>
         <button *ngIf="data.mode !== 'View'" type="submit" class="bg-primary">

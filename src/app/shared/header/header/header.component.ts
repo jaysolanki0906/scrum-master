@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
     private token: TokenService,
     private router: Router,
     private sharedService: SharedService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.project.getProjectsData().subscribe({
@@ -38,15 +38,13 @@ export class HeaderComponent implements OnInit {
       },
     });
     this.sharedService.userRole$.subscribe((role) => {
-  this.role = role;
-  console.log('HeaderComponent: role updated to', this.role);
-});
-
-
-    console.log("this is role under the header",this.role);
+      this.role = role;
+      console.log('HeaderComponent: role updated to', this.role);
+    });
+    console.log("this is role under the header", this.role);
   }
 
-  
+
 
   closeMobileMenu() {
     this.isMobileMenuOpen = false;

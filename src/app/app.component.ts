@@ -3,10 +3,12 @@ import { Component } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 import { HeaderComponent } from './shared/header/header/header.component';
+import { LoaderComponent } from './shared/loader/loader.component';
+import { LoaderService } from './core/services/loader.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,CommonModule,HeaderComponent],
+  imports: [RouterOutlet,CommonModule,HeaderComponent,LoaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

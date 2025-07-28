@@ -1,0 +1,8 @@
+<!-- loader.component.html -->
+<div class="global-loader" *ngIf="isLoading | async">
+  <mat-progress-spinner
+    diameter="50"
+    mode="indeterminate"
+    color="primary"
+  ></mat-progress-spinner>
+</div>

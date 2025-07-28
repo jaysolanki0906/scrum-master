@@ -9,7 +9,6 @@ import { Story } from '../models/story.model';
 export class StoryService {
   constructor(private supabaseService: SupabaseService) {}
 
-  // ✅ Get stories by sprintId
   getStory(sprintId: string) {
     return from(
       this.supabaseService.client
@@ -24,7 +23,6 @@ export class StoryService {
     );
   }
 
-  // ✅ Add a story
   addStory(payload: Story) {
     return from(
       this.supabaseService.client
@@ -38,7 +36,6 @@ export class StoryService {
     );
   }
 
-  // ✅ Update a story by ID
   updateStory(id: string, payload: Story) {
     return from(
       this.supabaseService.client
@@ -53,7 +50,6 @@ export class StoryService {
     );
   }
 
-  // ✅ Delete a story by ID
   deleteStory(id: string) {
     return from(
       this.supabaseService.client

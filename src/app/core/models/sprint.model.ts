@@ -3,8 +3,8 @@ export interface Sprint {
   projectId: number,
   sprintName: string,
   goal: string,
-  startDate: string, // must be 'YYYY-MM-DD'
-  endDate: string,   // must be 'YYYY-MM-DD'
+  startDate: string, 
+  endDate: string,
   status: 'Active' | 'Completed' | 'Upcoming'
 }
 

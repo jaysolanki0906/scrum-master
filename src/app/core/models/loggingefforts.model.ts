@@ -4,6 +4,6 @@ export interface LoggingEffort {
   hours_spent: string;
   description: string;
   logged_by: number;
-  logged_by_name?: string; // optional, populated via join
+  logged_by_name?: string; 
   task_id: number;
 }

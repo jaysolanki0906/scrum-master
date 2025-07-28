@@ -63,17 +63,17 @@ export class LoggingEffortsFormComponent implements OnInit {
       }
     }
 
-    this.populateEditForm(); // ✅ Called after safety checks
+    this.populateEditForm(); 
   }
 
   getDate() {
     const id = this.shared.getSelectedProjectId() || '';
     if (!id) return;
 
-    this.prod.getProjectById(id).subscribe({
+    this.sprint.getSprintById(this.data.sprintId).subscribe({
       next: (project: any) => {
-        const start = new Date(project[0]?.startDate);
-        const end = new Date(project[0]?.endDate);
+        const start = new Date(project.startDate);
+        const end = new Date(project.endDate);
 
         if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
           this.minDate = start.toISOString().split('T')[0];

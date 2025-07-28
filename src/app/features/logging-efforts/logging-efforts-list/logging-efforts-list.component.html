@@ -3,6 +3,7 @@
 </div>
 
 <div class="table-container">
+  
   <table class="project-table">
     <thead>
       <tr>
@@ -60,4 +61,7 @@
       </tr>
     </tbody>
   </table>
+  <div *ngIf="loggingEfforts.length === 0" class="no-story-message">
+    There is no data.
+  </div>
 </div>

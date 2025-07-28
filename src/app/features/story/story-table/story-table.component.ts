@@ -14,6 +14,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Route, Router } from '@angular/router';
+import { EmployeeService } from '../../../core/services/employee.service';
+import { Employee } from '../../../core/models/employee.model';
 
 @Component({
   selector: 'app-story-table',
@@ -26,11 +28,13 @@ export class StoryTableComponent implements OnInit {
   storyList: Story[] = [];
   sprintList: Sprint[] = [];
   taskList: Task[] = [];
+  employeeList:Employee[]=[];
   hoveredTaskId: number | null = null;
   selectedSprint!: Sprint;
 
   constructor(
     private shared: SharedService,
+    private employee:EmployeeService,
     private story: StoryService,
     private alert: AlertService,
     private dialog: MatDialog,
@@ -42,6 +46,23 @@ export class StoryTableComponent implements OnInit {
   ngOnInit(): void {
     this.getAllSprint();
     this.changeInDropdown();
+    this.getEmployeeList();
+  }
+  getEmployeeList()
+  {
+    this.employee.getEmployees().subscribe({
+      next:(res)=>{
+        this.employeeList=res;
+      },
+      error:(err)=>{
+        this.alert.sidePopUp('Yo got some error while fetching Employees','error');
+        console.log('error',err)
+      }
+    })
+  }
+  getEmployeeName(id:number|undefined):string|null{
+    const emp=this.employeeList.find((e)=>String(e.id)==String(id));
+    return emp?emp.name:null;
   }
 
   changeInDropdown() {
@@ -182,10 +203,14 @@ export class StoryTableComponent implements OnInit {
     });}
   }
   loggingEffort(task: Task): void {
-    this.router.navigate(['scrum-board/logging'], {
-      queryParams: { taskId: task.id },
-    });
-  }
+  this.router.navigate(['scrum-board/logging'], {
+    queryParams: {
+      taskId: task.id,
+      sprintId: this.selectedSprint?.id 
+    },
+  });
+}
+
 
   onEditTask(task: Task) {
     this.dialog

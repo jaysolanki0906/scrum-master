@@ -17,7 +17,6 @@ export const roleBasedGuard: CanActivateFn = async (
   const supabase = inject(SupabaseService).client;
   const router = inject(Router);
 
-  // 🟢 Recover session if role is missing
   if (!sharedService.getUserRole()) {
     const { data: { session }, error } = await supabase.auth.getSession();
 

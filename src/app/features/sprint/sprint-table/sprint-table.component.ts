@@ -43,7 +43,6 @@ export class SprintTableComponent implements OnInit {
     this.form = this.fb.group({
       selectedProject: [null, Validators.required],
     });
-    this.dropdownSettings();
     this.dropdownData();
     this.getSprintData();
     this.changeInDropdown();
@@ -85,17 +84,7 @@ getProjectDate() {
     }
   }
 
-  dropdownSettings() {
-    this.dropdownSettingsvar = {
-      singleSelection: true,
-      idField: 'id',
-      textField: 'projectName',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: true,
-    };
-  }
+  
   AddSprint() {
     const selectedProject = this.form.value.selectedProject?.[0];
     this.dialog
