@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { TaskService } from '../../../core/services/task.service';
 import { AlertService } from '../../../core/services/alert.service';
+import { LoaderService } from '../../../core/services/loader.service';
 
 @Component({
   selector: 'app-task-form',
@@ -40,6 +41,7 @@ export class TaskFormComponent implements OnInit {
     private fb: FormBuilder,
     private taskservice: TaskService,
     private alert: AlertService,
+    private loader:LoaderService,
     private dialogRef: MatDialogRef<TaskFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -82,21 +84,31 @@ export class TaskFormComponent implements OnInit {
       },
     });
   }
+  preventInvalidKeys(event: KeyboardEvent) {
+    if (['e', 'E', '+', '-'].includes(event.key)) {
+      event.preventDefault();
+    }
+  }
 
 
   onSubmit(): void {
+    this.loader.show();
     if (this.taskForm.invalid) {
       this.taskForm.markAllAsTouched();
+      this.loader.hide();
+      return;
     }
     if (this.data.mode == 'Add') {
       this.taskservice.addTask(this.taskForm.value).subscribe({
         next: () => {
           this.alert.sidePopUp('Data added sucessfully', 'success');
           this.dialogRef.close({status:true});
+          this.loader.hide();
         },
         error: (err) => {
-          this.alert.sidePopUp('got some error', 'error');
+          this.alert.sidePopUp(err.message,'error');
           console.log('error', err);
+          this.loader.hide();
         },
       });
     } else if (this.data.mode == 'Edit') {
@@ -104,9 +116,11 @@ export class TaskFormComponent implements OnInit {
         next:()=>{
           this.alert.sidePopUp("Data is edited sucessfully",'success');
           this.dialogRef.close({status:true});
+          this.loader.hide();
         },
-        error:()=>{
-          this.alert.sidePopUp("You got some error",'error');
+        error:(err)=>{
+          this.alert.sidePopUp(err.message,'error');
+          this.loader.hide();
         }
       })
     }

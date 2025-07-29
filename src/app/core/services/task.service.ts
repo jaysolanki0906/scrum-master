@@ -35,6 +35,20 @@ export class TaskService {
         })
     );
   }
+  editStatusTask(id: string, { status }: { status: string }) {
+  return from(
+    this.supabaseService.client
+      .from('task')
+      .update({ status })  
+      .eq("id", id)
+      .then(({ data, error }) => {
+        if (error) throw error;
+        console.log('task by ID:', data);
+        return data;
+      })
+  );
+}
+
   getTaskById(id:string)
   {
     return from(

@@ -5,6 +5,8 @@ import { EmployeeService } from '../../../core/services/employee.service';
 import { Router } from '@angular/router';
 import { SharedService } from '../../../core/services/shared.service';
 import { SupabaseService } from '../../../core/services/supabase.service';
+import { LoaderService } from '../../../core/services/loader.service';
+import { AlertService } from '../../../core/services/alert.service';
 
 @Component({
   selector: 'app-login-form',
@@ -22,7 +24,9 @@ export class LoginFormComponent {
     private employeeservice: EmployeeService,
     private supabaseService: SupabaseService,
     private sharedService: SharedService,
-    private router: Router
+    private router: Router,
+    private alert:AlertService,
+    private loader: LoaderService
   ) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -36,6 +40,7 @@ export class LoginFormComponent {
 
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value;
+      this.loader.show();
 
       this.supabaseService.client.auth
         .signInWithPassword({
@@ -45,13 +50,12 @@ export class LoginFormComponent {
         .then(async ({ data, error }) => {
           if (error || !data.session) {
             this.loginError = 'Invalid credentials';
+            this.loader.hide();
             return;
           }
 
           const { access_token, refresh_token, user } = data.session;
-
           this.token.saveTokens(access_token, refresh_token);
-          console.log('user',user);
 
           const employeeId = user.id;
 
@@ -63,15 +67,21 @@ export class LoginFormComponent {
 
           if (empErr || !employeeData) {
             this.loginError = 'Employee fetch failed';
+            this.loader.hide();
             return;
           }
 
-          this.sharedService.setUserId(employeeData.id);
-          this.sharedService.setUserRole(employeeData.role);
+          // this.sharedService.setUserId(employeeData.id);
+          // this.sharedService.setUserRole(employeeData.role);
 
+          this.loader.hide();
           this.router.navigate(['/dashboard']);
+        })
+        .catch((err) => {
+          this.loginError = 'Something went wrong';
+          this.alert.sidePopUp(err.message,'error');
+          this.loader.hide();
         });
     }
   }
-
 }

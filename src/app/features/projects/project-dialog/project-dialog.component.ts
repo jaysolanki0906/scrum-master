@@ -22,6 +22,7 @@ import { NgDatesModule } from 'ng-dates';
 import { ProductService } from '../../../core/services/product.service';
 import { AlertService } from '../../../core/services/alert.service';
 import { EmployeeService } from '../../../core/services/employee.service';
+import { LoaderService } from '../../../core/services/loader.service';
 
 @Component({
   selector: 'app-project-dialog',
@@ -48,6 +49,7 @@ export class ProjectDialogComponent implements OnInit {
     private alert: AlertService,
     private employee:EmployeeService,
     private productService: ProductService,
+    private loader:LoaderService,
     public dialogRef: MatDialogRef<ProjectDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -80,7 +82,7 @@ export class ProjectDialogComponent implements OnInit {
       endDateControl?.setValue(null); 
     }
 
-    // Re-validate the form
+
     this.projectForm.updateValueAndValidity();
   });
       this.fetchEmployee();
@@ -108,30 +110,34 @@ export class ProjectDialogComponent implements OnInit {
 
   onSubmit(): void {
     if (!this.projectForm.valid) {
+      this.projectForm.markAllAsTouched();
       return;
     }
 
     if (this.data.mode === 'Edit') {
+      this.loader.show();
       this.productService
         .editProject(this.data.id, this.projectForm.value)
         .subscribe({
           next: () => {
             this.alert.sidePopUp('Your data is sucessfully updated', 'success');
             this.dialogRef.close({ status: true });
+            this.loader.hide();
           },
           error: (err) => {
-            this.alert.sidePopUp(
-              `Your data is sucessfully updated ${err}`,
-              'success'
-            );
+            this.alert.sidePopUp(err.message,'error');
+            this.loader.hide();
           },
         });
     } else if (this.data.mode === 'Add') {
+      this.loader.show();
       this.productService.addProject(this.projectForm.value).subscribe({
         next: () => {
           this.alert.sidePopUp('Data added sucessfully', 'success');
           this.dialogRef.close({ status: true });
+          this.loader.hide();
         },
+        error:(err)=>{this.loader.hide();this.alert.sidePopUp(err.message,'error');}
       });
     }
   }

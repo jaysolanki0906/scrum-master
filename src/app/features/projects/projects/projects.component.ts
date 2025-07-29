@@ -21,29 +21,33 @@ export class ProjectsComponent implements OnInit {
 
   searchText: string = '';
 
-  constructor(private product: ProductService,
+  constructor(
+    private product: ProductService,
     private dialog: MatDialog,
     private alert: AlertService,
     private employee: EmployeeService,
     private loaderService: LoaderService,
-    private alertService: AlertService) { }
+    private alertService: AlertService
+  ) {}
 
   ngOnInit(): void {
     this.fetchProjects();
     this.getEmployee();
   }
+
   getEmployee() {
     this.loaderService.show();
     this.employee.getEmployees().subscribe({
       next: (res) => {
         this.employeeList = res;
         console.log('Employee list loaded:', this.employeeList);
+        this.loaderService.hide();
       },
       error: (err) => {
-        console.error('Failed to fetch employees', err);
+        this.alert.sidePopUp(err.message,'error');
+        this.loaderService.hide();
       }
     });
-    this.loaderService.hide();
   }
 
   getOwnerName(id: string): string | null {
@@ -56,22 +60,28 @@ export class ProjectsComponent implements OnInit {
       next: (res) => {
         this.projects = res;
         console.log(res);
+        
       },
-      error: (error) => {
-        this.projects = error;
+      error: (err) => {
+        this.alert.sidePopUp(err.message,'error');
       }
     });
   }
 
   edit(project: any) {
+   
     this.dialog.open(ProjectDialogComponent, {
       width: '600px',
-      data: { ...project, mode: "Edit" }
+      data: { ...project, mode: 'Edit' }
     }).afterClosed().subscribe({
       next: (res) => {
-        if (res.status == true)
+        if (res?.status === true) {
           this.fetchProjects();
-        console.log('it is closed');
+        }
+        
+      },
+      error: (err) => {
+        this.alert.sidePopUp(err.message,'error');
       }
     });
   }
@@ -79,12 +89,21 @@ export class ProjectsComponent implements OnInit {
   async onDelete(project: any) {
     const confirmed = await this.alertService.confirmDelete();
     if (confirmed) {
+      this.loaderService.show();
       this.product.deleteProject(project.id).subscribe({
-        next: () => { this.alert.sidePopUp("Delete happened sucessfully", 'success'); this.fetchProjects() },
-        error: () => { this.alert.sidePopUp("Error happned while delete", 'error') }
+        next: () => {
+          this.alert.sidePopUp('Delete happened successfully', 'success');
+          this.fetchProjects();
+          this.loaderService.hide();
+        },
+        error: (err) => {
+          this.alert.sidePopUp(err.message,'error');
+          this.loaderService.hide();
+        }
       });
+    } else {
+      this.loaderService.hide(); 
     }
-
   }
 
   add() {
@@ -93,9 +112,12 @@ export class ProjectsComponent implements OnInit {
       data: { mode: 'Add' }
     }).afterClosed().subscribe({
       next: (res) => {
-        if (res.status == true)
+        if (res?.status === true) {
           this.fetchProjects();
-        console.log('it is closed');
+        }
+      },
+      error: (err) => {
+        this.alert.sidePopUp(err.message,'error');
       }
     });
   }

@@ -4,9 +4,11 @@ import { StoryTableComponent } from './story-table/story-table.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ProjectsComponent } from '../projects/projects/projects.component';
 import { FormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { DndModule } from 'ngx-drag-drop';
 import { LoggingEffortsFormComponent } from '../logging-efforts/logging-efforts-form/logging-efforts-form.component';
 import { LoggingEffortsListComponent } from '../logging-efforts/logging-efforts-list/logging-efforts-list.component';
 
@@ -22,6 +24,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     MatMenuModule,
+    DragDropModule,
+    DndModule,
     MatIconModule,
     MatButtonModule,
     RouterModule.forChild(routes),

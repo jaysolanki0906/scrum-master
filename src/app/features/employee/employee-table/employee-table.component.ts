@@ -4,75 +4,107 @@ import { AlertService } from '../../../core/services/alert.service';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { Employee } from '../../../core/models/employee.model';
 import { EmployeeFormComponent } from '../employee-form/employee-form.component';
+import { LoaderService } from '../../../core/services/loader.service'; 
 
 @Component({
   selector: 'app-employee-table',
-  standalone:false,
+  standalone: false,
   templateUrl: './employee-table.component.html',
-  styleUrl: './employee-table.component.scss'
+  styleUrl: './employee-table.component.scss',
 })
 export class EmployeeTableComponent {
-   employees:Employee[]=[];
-  
-    searchText: string = '';
-  
-    constructor(private dialog: MatDialog,private employeeServices:EmployeeService,private alert:AlertService) {}
-  
-    ngOnInit(): void {
-      this.fetchEmployees();
-    }
-    fetchEmployees()
-    {
-      this.employeeServices.getEmployees().subscribe({
-        next:(res)=>{
-          this.employees=res;
-          console.log('this.employees',this.employees);
-          this.alert.sidePopUp('All employees fetched sucessfully','success');
+  employees: Employee[] = [];
+  searchText: string = '';
+
+  constructor(
+    private dialog: MatDialog,
+    private employeeServices: EmployeeService,
+    private alert: AlertService,
+    private loaderService: LoaderService 
+  ) {}
+
+  ngOnInit(): void {
+    this.fetchEmployees();
+  }
+
+  fetchEmployees() {
+    this.loaderService.show();
+    this.employeeServices.getEmployees().subscribe({
+      next: (res) => {
+        this.employees = res;
+        console.log('this.employees', this.employees);
+        this.alert.sidePopUp('All employees fetched successfully', 'success');
+        this.loaderService.hide(); 
+      },
+      error: (err) => {
+        this.alert.sidePopUp(err.message,'error');
+        this.loaderService.hide(); 
+      },
+    });
+  }
+
+  edit(employee: any) {
+    
+    this.dialog
+      .open(EmployeeFormComponent, {
+        width: '600px',
+        data: { mode: 'Edit', ...employee },
+      })
+      .afterClosed()
+      .subscribe({
+        next: (res) => {
+          if (res?.success === true) this.fetchEmployees();
         },
-        error:()=>{
-          this.alert.sidePopUp('Sorry at the moment their is some issue','error');
-        }
-      })
-    }
-  
-    edit(project:any) {
-      this.dialog.open(EmployeeFormComponent,{
-        width:'600px',
-        data:{mode:'Edit',...project}
-      }).afterClosed().subscribe({
-        next:(res)=>{
-          if(res.success==true)this.fetchEmployees()}
-      })
-    }
-  
-    onDelete(project:any) {
-      this.employeeServices.deleteEmployee(project.id).subscribe({
-        next:()=>{
-          this.alert.sidePopUp('This data is sucessfully delete','success');
-          this.fetchEmployees();
+        error: (err) => {
+          this.alert.sidePopUp(err.message,'error');
         },
-        error:(err)=>{
-          this.alert.sidePopUp('Sorry some error occured','error');
-          console.log("error",err);
-        }
+      });
+  }
+
+  async onDelete(employee: any) {
+     const confirmed = await this.alert.confirmDelete();
+     if(confirmed){
+      this.loaderService.show();
+    this.employeeServices.deleteEmployee(employee.id).subscribe({
+      next: () => {
+        this.alert.sidePopUp(
+          'This data is successfully deleted',
+          'success'
+        );
+        this.fetchEmployees();
+        this.loaderService.hide(); 
+      },
+      error: (err) => {
+        this.alert.sidePopUp(err.message, 'error');
+        console.log('error', err);
+        this.loaderService.hide();
+      },
+    });}
+  }
+
+  add() {
+    
+    this.dialog
+      .open(EmployeeFormComponent, {
+        width: '600px',
+        data: { mode: 'Add' },
       })
-    }
-  
-    add()
-    {
-      this.dialog.open(EmployeeFormComponent,{
-        width:'600px',
-        data:{mode:'Add'}
-      }).afterClosed().subscribe({
-        next:(res)=>{
-          if(res.success==true)this.fetchEmployees()}
-      })
-    }
-  
-    view(project:any) {
-      this.dialog.open(EmployeeFormComponent,{
-        width:'600px',
-        data:{mode:'View',...project}
-      })
-    }
+      .afterClosed()
+      .subscribe({
+        next: (res) => {
+          if (res?.success === true) this.fetchEmployees();
+          
+        },
+        error: (err) => {
+          this.alert.sidePopUp(err.message,'error');
+        },
+      });
+  }
+
+  view(employee: any) {
+    this.dialog.open(EmployeeFormComponent, {
+      width: '600px',
+      data: { mode: 'View', ...employee },
+    });
+  }
 }

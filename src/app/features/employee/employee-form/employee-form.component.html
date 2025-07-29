@@ -65,19 +65,20 @@
           [disabled]="data.mode === 'View'"
           formControlName="phoneNumber"
           maxlength="10"
+          (keydown)="preventInvalidKeys($event)"
           placeholder="Enter phone number"
         />
         <div
           class="field-error"
           *ngIf="
-            employeeForm.get('phone')?.touched &&
-            employeeForm.get('phone')?.invalid
+            employeeForm.get('phoneNumber')?.touched &&
+            employeeForm.get('phoneNumber')?.invalid
           "
         >
-          <span *ngIf="employeeForm.get('phone')?.errors?.['required']"
+          <span *ngIf="employeeForm.get('phoneNumber')?.errors?.['required']"
             >Phone number is required.</span
           >
-          <span *ngIf="employeeForm.get('phone')?.errors?.['pattern']"
+          <span *ngIf="employeeForm.get('phoneNumber')?.errors?.['pattern']"
             >Enter a valid phone number.</span
           >
         </div>
@@ -119,7 +120,7 @@
           formControlName="role"
         >
           <option value="" disabled>
-            Select role<span class="required-star">*</span>
+            Select role
           </option>
           <option value="Admin">Admin</option>
           <option value="User">User</option>

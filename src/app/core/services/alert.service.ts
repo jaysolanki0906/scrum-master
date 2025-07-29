@@ -11,7 +11,7 @@ export class AlertService {
     icon: status,
     title: status,
     text: swal_text,
-    timer: 2000,
+    timer: 5000,
     showConfirmButton: false,
     position: 'top-end',
     toast: true,

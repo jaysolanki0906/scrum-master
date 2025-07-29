@@ -34,9 +34,7 @@
     </div>
   </div>
 
-
   <div class="board-table-container">
-    
     <table class="scrum-table">
       <thead>
         <tr>
@@ -46,10 +44,8 @@
           <th class="task-column done-column">Done</th>
         </tr>
       </thead>
-      
       <tbody>
         <tr *ngFor="let story of storyList" class="story-row">
-
           <td class="story-cell">
             <div class="story-card">
               <div class="story-header">
@@ -77,89 +73,98 @@
             </div>
           </td>
 
-          
-          <td class="task-cell todo-cell">
-            <div class="task-container">
-              <div
-                class="task-card todo-task"
-                *ngFor="
-                  let task of getTasksByStatus(story.tasks, 'Todo');
-                  let i = index
-                "
-                (mouseenter)="hoveredTaskId = task.id"
-                (mouseleave)="hoveredTaskId = null"
-              >
-                <div class="task-header">
-                  <span class="task-id">{{ task.title }}</span>
-                  <div
-                    class="task-options"
-                    [style.visibility]="
-                      hoveredTaskId === task.id ? 'visible' : 'hidden'
-                    "
-                  >
-                    <button
-                      mat-icon-button
-                      [matMenuTriggerFor]="taskMenu"
-                      (click)="$event.stopPropagation()"
+          <td
+            class="task-cell todo-cell"
+            (dragover)="onDragOver($event)"
+            (drop)="onDrop($event, story, 'Todo')"
+          >
+            <div class="">
+              <div class="task-container">
+                <div
+                  class="task-card todo-task"
+                  *ngFor="
+                    let task of getTasksByStatus(story.tasks, 'Todo');
+                    let i = index
+                  "
+                  (mouseenter)="hoveredTaskId = task.id"
+                  (mouseleave)="hoveredTaskId = null"
+                  draggable="true"
+                  (dragstart)="onDragStart($event, task, story, 'Todo')"
+                >
+                  <div class="task-header">
+                    <span class="task-id">{{ task.title }}</span>
+                    <div
+                      class="task-options"
+                      [style.visibility]="
+                        hoveredTaskId === task.id ? 'visible' : 'hidden'
+                      "
                     >
-                      <mat-icon>more_vert</mat-icon>
-                    </button>
-
-                    <mat-menu #taskMenu="matMenu">
-                      <button mat-menu-item (click)="onViewTask(task)">
-                        <mat-icon>visibility</mat-icon>
-                        <span>View</span>
+                      <button
+                        mat-icon-button
+                        [matMenuTriggerFor]="taskMenu"
+                        (click)="$event.stopPropagation()"
+                      >
+                        <mat-icon>more_vert</mat-icon>
                       </button>
-                      <button mat-menu-item (click)="onEditTask(task)">
-                        <mat-icon>edit</mat-icon>
-                        <span>Edit</span>
-                      </button>
-                      <button mat-menu-item (click)="onDeleteTask(task)">
-                        <mat-icon>delete</mat-icon>
-                        <span>Delete</span>
-                      </button>
-                      <button mat-menu-item (click)="loggingEffort(task)">
-                        <mat-icon>schedule</mat-icon>
-                        <span>Logging effort</span>
-                      </button>
-                    </mat-menu>
+                      <mat-menu #taskMenu="matMenu">
+                        <button mat-menu-item (click)="onViewTask(task)">
+                          <mat-icon>visibility</mat-icon>
+                          <span>View</span>
+                        </button>
+                        <button mat-menu-item (click)="onEditTask(task)">
+                          <mat-icon>edit</mat-icon>
+                          <span>Edit</span>
+                        </button>
+                        <button mat-menu-item (click)="onDeleteTask(task)">
+                          <mat-icon>delete</mat-icon>
+                          <span>Delete</span>
+                        </button>
+                        <button mat-menu-item (click)="loggingEffort(task)">
+                          <mat-icon>schedule</mat-icon>
+                          <span>Logging effort</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+                  </div>
+                  <div class="task-description">{{ task.description }}</div>
+                  <div class="task-details">
+                    <span class="task-estimate"
+                      >{{ task.estimated_hours }}h</span
+                    >
+                    <span class="task-points">{{ task.points }}pts</span>
+                    <span
+                      class="badge"
+                      [ngClass]="
+                        task.type === 'Bug' ? 'bg-danger' : 'bg-secondary '
+                      "
+                    >
+                      {{ task.type }}
+                    </span>
+                  </div>
+                  <div class="task-meta">
+                    <span class="task-assignee"
+                      >Assigned: {{ getEmployeeName(task.assign_to) }}</span
+                    >
+                    <span class="task-date">{{
+                      task.created_at | date : "short"
+                    }}</span>
                   </div>
                 </div>
-
-                <div class="task-description">{{ task.description }}</div>
-                <div class="task-details">
-                  <span class="task-estimate">{{ task.estimated_hours }}h</span>
-                  <span class="task-points">{{ task.points }}pts</span>
-                  <span
-                    class="badge"
-                    [ngClass]="
-                      task.type === 'Bug' ? 'bg-danger' : 'bg-secondary '
-                    "
-                  >
-                    {{ task.type }}
-                  </span>
+                <div
+                  *ngIf="getTasksByStatus(story.tasks, 'Todo').length === 0"
+                  class="no-tasks"
+                >
+                  No tasks
                 </div>
-                <div class="task-meta">
-                  <span class="task-assignee"
-                    >Assigned: {{ getEmployeeName(task.assign_to) }}</span
-                  >
-                  <span class="task-date">{{
-                    task.created_at | date : "short"
-                  }}</span>
-                </div>
-              </div>
-
-              <div
-                *ngIf="getTasksByStatus(story.tasks, 'Todo').length === 0"
-                class="no-tasks"
-              >
-                No tasks
               </div>
             </div>
           </td>
 
-
-          <td class="task-cell progress-cell">
+          <td
+            class="task-cell progress-cell"
+            (dragover)="onDragOver($event)"
+            (drop)="onDrop($event, story, 'In Progress')"
+          >
             <div class="task-container">
               <div
                 class="task-card progress-task"
@@ -169,6 +174,8 @@
                 "
                 (mouseenter)="hoveredTaskId = task.id"
                 (mouseleave)="hoveredTaskId = null"
+                draggable="true"
+                (dragstart)="onDragStart($event, task, story, 'In Progress')"
               >
                 <div class="task-header">
                   <span class="task-id">{{ task.title }}</span>
@@ -185,7 +192,6 @@
                     >
                       <mat-icon>more_vert</mat-icon>
                     </button>
-
                     <mat-menu #progressMenu="matMenu">
                       <button mat-menu-item (click)="onViewTask(task)">
                         <mat-icon>visibility</mat-icon>
@@ -239,7 +245,11 @@
             </div>
           </td>
 
-          <td class="task-cell done-cell">
+          <td
+            class="task-cell done-cell"
+            (dragover)="onDragOver($event)"
+            (drop)="onDrop($event, story, 'Done')"
+          >
             <div class="task-container">
               <div
                 class="task-card done-task"
@@ -249,6 +259,8 @@
                 "
                 (mouseenter)="hoveredTaskId = task.id"
                 (mouseleave)="hoveredTaskId = null"
+                draggable="true"
+                (dragstart)="onDragStart($event, task, story, 'Done')"
               >
                 <div class="task-header">
                   <span class="task-id">{{ task.title }}</span>
@@ -265,7 +277,6 @@
                     >
                       <mat-icon>more_vert</mat-icon>
                     </button>
-
                     <mat-menu #doneMenu="matMenu">
                       <button mat-menu-item (click)="onViewTask(task)">
                         <mat-icon>visibility</mat-icon>
@@ -323,7 +334,7 @@
       </tbody>
     </table>
     <div *ngIf="storyList.length === 0" class="no-story-message">
-    There is no story.
-  </div>
+      There is no story.
+    </div>
   </div>
 </div>

@@ -11,6 +11,7 @@ import { StoryService } from '../../../core/services/story.service';
 import { AlertService } from '../../../core/services/alert.service';
 import { Story } from '../../../core/models/story.model';
 import { CommonModule } from '@angular/common';
+import { LoaderService } from '../../../core/services/loader.service';
 
 @Component({
   selector: 'app-story-form',
@@ -26,6 +27,7 @@ export class StoryFormComponent implements OnInit {
     private fb: FormBuilder,
     private alert: AlertService,
     private storyService: StoryService,
+    private loader:LoaderService,
     public dialogRef: MatDialogRef<StoryFormComponent>,
     @Inject(MAT_DIALOG_DATA)
     public data: {
@@ -70,25 +72,31 @@ export class StoryFormComponent implements OnInit {
     const payload = this.storyForm.getRawValue();
 
     if (this.data.mode === 'Add') {
+      this.loader.show();
       this.storyService.addStory(payload).subscribe({
         next: () => {
           this.alert.sidePopUp('Story added successfully!', 'success');
           this.dialogRef.close({ success: true });
+          this.loader.hide();
         },
-        error: () => {
-          this.alert.sidePopUp('Failed to add story.', 'error');
+        error: (err) => {
+          this.alert.sidePopUp(err.message,'error');
+          this.loader.hide();
         },
       });
     }
 
     if (this.data.mode === 'Edit' && this.data.storyData?.id) {
+      this.loader.show();
       this.storyService.updateStory(this.data.storyData.id.toString(), payload).subscribe({
         next: () => {
           this.alert.sidePopUp('Story updated successfully!', 'success');
           this.dialogRef.close({ success: true });
+          this.loader.hide();
         },
-        error: () => {
-          this.alert.sidePopUp('Failed to update story.', 'error');
+        error: (err) => {
+          this.loader.hide();
+          this.alert.sidePopUp(err.message,'error');
         },
       });
     }

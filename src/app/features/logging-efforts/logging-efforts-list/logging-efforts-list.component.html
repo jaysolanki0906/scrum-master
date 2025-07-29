@@ -1,67 +1,10 @@
-<div class="add-btn-container">
-  <button class="action-btn view" title="Add" (click)="add()">ADD</button>
-</div>
-
-<div class="table-container">
-  
-  <table class="project-table">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Hours Spent</th>
-        <th>Description</th>
-        <th>Logged By</th>
-        <th>Task Name</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let effort of loggingEfforts">
-        <td>{{ effort.date | date: 'yyyy-MM-dd' }}</td>
-        <td>{{ effort.hours_spent }}</td>
-        <td class="truncate" [attr.data-full-text]="effort.description">
-          {{ effort.description ? (effort.description | truncateWords : 6) : '-' }}
-        </td>
-        <td>{{ employeeMap[effort.logged_by] || 'Unknown' }}</td> 
-        <td>{{ taskMap[effort.task_id] || 'Unknown' }}</td>
-        <td class="actions">
-          <div class="action-btn-group">
-            <button
-              class="action-btn edit"
-              title="Edit"
-              (click)="edit(effort)"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-              </svg>
-            </button>
-            <button
-              class="action-btn view"
-              title="View"
-              (click)="view(effort)"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </button>
-            <button
-              class="action-btn delete"
-              title="Delete"
-              (click)="onDelete(effort)"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="3,6 5,6 21,6"></polyline>
-                <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"></path>
-              </svg>
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div *ngIf="loggingEfforts.length === 0" class="no-story-message">
-    There is no data.
-  </div>
-</div>
+<app-common-table
+  [headers]="effortHeaders"
+  [keys]="effortKeys"
+  [data]="loggingEfforts"
+  [taskMap]="taskMap"
+  (add)="add()"
+  (edit)="edit($event)"
+  (view)="view($event)"
+  (delete)="onDelete($event)">
+</app-common-table>

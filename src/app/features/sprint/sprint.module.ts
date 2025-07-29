@@ -9,6 +9,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { CommonTableComponent } from '../../shared/common-table/common-table.component';
 
 const routes: Routes = [
   { path: '', component: SprintTableComponent },
@@ -23,6 +24,7 @@ const routes: Routes = [
     MatInputModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
+    CommonTableComponent,
     NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forChild(routes)
   ],

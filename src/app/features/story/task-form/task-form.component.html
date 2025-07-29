@@ -55,7 +55,7 @@
 
       <div class="form-field">
         <label for="points">Points<span class="required-star">*</span></label>
-        <input id="points" type="number" formControlName="points" placeholder="Enter story points" />
+        <input id="points" type="number" (keydown)="preventInvalidKeys($event)" formControlName="points" placeholder="Enter story points" />
         <div class="field-error" *ngIf="taskForm.get('points')?.touched && taskForm.get('points')?.invalid">
           <span *ngIf="taskForm.get('points')?.errors?.['required']">Status is required.</span>
         </div>
@@ -64,7 +64,7 @@
 
       <div class="form-field">
         <label for="estimated_hours">Estimated Hours<span class="required-star">*</span></label>
-        <input id="estimated_hours" type="number" formControlName="estimated_hours" placeholder="Enter estimated hours" />
+        <input id="estimated_hours" (keydown)="preventInvalidKeys($event)" type="number" formControlName="estimated_hours" placeholder="Enter estimated hours" />
          <div class="field-error" *ngIf="taskForm.get('points')?.touched && taskForm.get('points')?.invalid">
           <span *ngIf="taskForm.get('points')?.errors?.['required']">Status is required.</span>
         </div>

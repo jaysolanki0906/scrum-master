@@ -1,0 +1,96 @@
+<div class="add-btn-container">
+  <button class="action-btn view" title="Add" (click)="add.emit()">ADD</button>
+</div>
+
+<div class="table-container">
+  <table class="project-table">
+    <thead>
+      <tr>
+        <th *ngFor="let head of headers">{{ head }}</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let row of data">
+        <td *ngFor="let key of keys" class="truncate">
+          {{
+            key === "password"
+              ? (row[key] | maskText)
+              : key === "description"
+              ? (row[key] | truncateWords : 4)
+              : key === "owner" || key === "logged_by"
+              ? getOwnerName(row[key])
+              : key === "task_id"
+              ? taskMap[row[key]] || "Unknown"
+              : row[key]
+          }}
+        </td>
+
+        <td class="actions">
+          <div class="action-btn-group">
+            <button
+              class="action-btn edit"
+              (click)="edit.emit(row)"
+              title="Edit"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                ></path>
+                <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </button>
+            <button
+              class="action-btn view"
+              (click)="view.emit(row)"
+              title="View"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+            <button
+              class="action-btn delete"
+              (click)="delete.emit(row)"
+              title="Delete"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <polyline points="3,6 5,6 21,6"></polyline>
+                <path
+                  d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="data.length === 0" class="no-story-message">
+    There is no data.
+  </div>
+</div>
