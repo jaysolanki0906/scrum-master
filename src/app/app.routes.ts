@@ -15,6 +15,7 @@ export const routes: Routes = [
      { path:'employee',loadChildren:()=>import('./features/employee/employee.module').then(m=>m.EmployeeModule),canActivate:[authGuard,homeGuard,roleBasedGuard]},
      { path:'scrum-board',loadChildren:()=>import('./features/story/story.module').then(m=>m.StoryModule),canActivate:[authGuard,homeGuard,roleBasedGuard]},
      { path: 'profile', loadChildren: () => import('./features/profile/profile.module').then(m => m.ProfileModule), canActivate: [authGuard,homeGuard,roleBasedGuard] },
+     { path:'register',loadChildren:()=>import('./features/register/register.module').then(m=>m.RegisterModule),canActivate:[loginGuard]},
      { path:'access-denied',component:AcessDeniedPageComponent,canActivate:[authGuard]},
      { path: '**', component: NotfoundComponent,canActivate:[homeGuard]}
 ];

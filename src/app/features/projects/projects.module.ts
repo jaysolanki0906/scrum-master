@@ -4,6 +4,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { RouterModule, Routes } from '@angular/router';
 import { TruncateWordsPipe } from '../../pipes/truncate-words.pipe';
 import { CommonTableComponent } from '../../shared/common-table/common-table.component';
+import Swal from 'sweetalert2';
 
 const routes: Routes = [
   { path: '', component: ProjectsComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
     CommonModule,
     TruncateWordsPipe,
     CommonTableComponent,
+
     RouterModule.forChild(routes),
   ],
   exports:[RouterModule]

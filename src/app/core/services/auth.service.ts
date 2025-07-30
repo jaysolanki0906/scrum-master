@@ -1,98 +1,116 @@
 import { Injectable } from '@angular/core';
+import { SupabaseService } from './supabase.service';
+import { from, forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { TokenService } from './token.service';
-import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
-import { of } from 'rxjs';
+export interface DashboardSummary {
+  totalProjects: number;
+  projects: {
+    active: number;
+    completed: number;
+  };
+  totalTasks: number;
+  taskStatus: {
+    done: number;
+    inProgress: number;
+    todo: number;
+  };
+  totalBugs: number;
+  hoursLogged: {
+    total: number;
+    thisSprint: number;
+  };
+}
 
-@Injectable()
+export interface DashboardCharts {
+  taskType: {
+    tasks: number;
+    bugs: number;
+  };
+  hoursBurndown: {
+    sprints: string[];
+    estimated: number[];
+    logged: number[];
+  };
+}
+
+export interface DashboardResponse {
+  summary: DashboardSummary;
+  charts: DashboardCharts;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
+  constructor(private supabase: SupabaseService) {}
 
-  constructor(private token:TokenService) { }
-  // getTokenApi()
-  // {
-  //   return this.api.get('login/1');
-  // }
   getDashboardData() {
-    return of([
-  {
-    "id": "1",
-    "summary": {
-      "totalProjects": 12,
-      "projects": {
-        "active": 3,
-        "completed": 9
-      },
-      "totalTasks": 248,
-      "taskStatus": {
-        "done": 156,
-        "inProgress": 67,
-        "todo": 25
-      },
-      "totalBugs": 23,
-      "bugs": {
-        "critical": 8,
-        "normal": 15
-      },
-      "hoursLogged": {
-        "total": 1247,
-        "thisSprint": 142
-      }
-    },
-    "charts": {
-      "taskType": {
-        "tasks": 248,
-        "bugs": 23
-      },
-      "sprintVelocity": {
-        "sprints": [
-          "Sprint 1",
-          "Sprint 2",
-          "Sprint 3",
-          "Sprint 4",
-          "Sprint 5",
-          "Sprint 6"
-        ],
-        "storyPoints": [
-          34,
-          42,
-          38,
-          45,
-          52,
-          48
-        ]
-      },
-      "hoursBurndown": {
-        "sprints": [
-          "Sprint 1",
-          "Sprint 2",
-          "Sprint 3",
-          "Sprint 4",
-          "Sprint 5",
-          "Sprint 6"
-        ],
-        "estimated": [
-          280,
-          240,
-          200,
-          160,
-          120,
-          80
-        ],
-        "logged": [
-          265,
-          235,
-          195,
-          155,
-          115,
-          85
-        ]
-      }
-    }
+    const client = this.supabase.client;
+
+    return forkJoin({
+      projects: from(client.from('projects').select('*')),
+      tasks: from(client.from('task').select('*')),
+      bug: from(client.from('task').select('*').eq('type', 'Bug')),
+      logging: from(client.from('loggingefforts').select('*')),
+      sprints: from(client.from('sprint').select('*'))
+    }).pipe(
+      map(({ projects, tasks, bug, logging, sprints }): DashboardResponse => {
+        const activeProjects = projects.data?.filter(p => p.status === 'active').length || 0;
+        const completedProjects = projects.data?.filter(p => p.status === 'completed').length || 0;
+
+        const totalTasks = tasks.data?.length || 0;
+        const taskStatus = {
+          done: tasks.data?.filter(t => t.status === 'Done').length || 0,
+          inProgress: tasks.data?.filter(t => t.status === 'In Progress').length || 0,
+          todo: tasks.data?.filter(t => t.status === 'Todo').length || 0
+        };
+
+        const totalBugs = bug.data?.length || 0;
+
+        const totalHours = logging.data?.reduce((acc, l) => acc + (l.hours_spent || 0), 0) || 0;
+
+        const latestSprint = sprints.data?.slice(-1)[0]?.id;
+        const thisSprintHours = logging.data?.filter(e => e.sprint_id === latestSprint)
+          .reduce((acc, l) => acc + (l.hours_spent || 0), 0) || 0;
+
+        const sprintNames = sprints.data?.map(s => s.name) || [];
+
+        const loggedPerSprint = sprintNames.map(name => {
+          const sprint = sprints.data?.find(s => s.name === name);
+          const sprintId = sprint?.id;
+          return logging.data?.filter(l => l.sprint_id === sprintId)
+            .reduce((acc, l) => acc + (l.hours_spent || 0), 0) || 0;
+        });
+
+        return {
+          summary: {
+            totalProjects: projects.data?.length || 0,
+            projects: {
+              active: activeProjects,
+              completed: completedProjects
+            },
+            totalTasks,
+            taskStatus,
+            totalBugs,
+            hoursLogged: {
+              total: totalHours,
+              thisSprint: thisSprintHours
+            }
+          },
+          charts: {
+            taskType: {
+              tasks: totalTasks,
+              bugs: totalBugs
+            },
+            hoursBurndown: {
+              sprints: sprintNames,
+              estimated: [280, 240, 200, 160, 120, 80], // Static for now
+              logged: loggedPerSprint
+            }
+          }
+        };
+      })
+    );
   }
-]); 
-  }
-  // refreshToken()
-  // {
-  //   return of('token');
-  // }
 }

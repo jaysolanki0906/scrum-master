@@ -11,6 +11,8 @@ export class SharedService {
 
   private userId = new BehaviorSubject<string | null>(null);
   userId$ = this.userId.asObservable();
+  private userName = new BehaviorSubject<string | null>(null);
+  userName$ = this.userId.asObservable();
 
   private userRole = new BehaviorSubject<string | null>(null);
   userRole$ = this.userRole.asObservable();
@@ -29,6 +31,12 @@ export class SharedService {
 
   getUserId(): string | null {
     return this.userId.value;
+  }
+  getUserName():string|null{
+    return this.userName.value;
+  }
+  setUserName(name:string){
+    this.userName.next(name);
   }
 
   setUserRole(role: string) {

@@ -1,80 +1,107 @@
 <div class="dialog-container">
   <h2>{{ data.mode }} Task</h2>
- <div class="scrollable-content">
-  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
-    <div class="form-grid">
 
-      <div class="form-field">
-        <label for="title">Title<span class="required-star">*</span></label>
-        <input id="title" type="text" formControlName="title" placeholder="Enter task title" />
-        <div class="field-error" *ngIf="taskForm.get('title')?.touched && taskForm.get('title')?.invalid">
-          <span *ngIf="taskForm.get('title')?.errors?.['required']">Title is required.</span>
+  <div class="scrollable-content">
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="title">Title<span class="required-star">*</span></label>
+          <input
+            id="title"
+            type="text"
+            formControlName="title"
+            placeholder="Enter task title"
+          />
+          <div class="field-error" *ngIf="taskForm.get('title')?.touched && taskForm.get('title')?.invalid">
+            <span *ngIf="taskForm.get('title')?.errors?.['required']">Title is required.</span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="description">Description<span class="required-star">*</span></label>
+          <textarea
+            id="description"
+            rows="3"
+            formControlName="description"
+            placeholder="Enter task description"
+          ></textarea>
+          <div class="field-error" *ngIf="taskForm.get('description')?.touched && taskForm.get('description')?.invalid">
+            <span *ngIf="taskForm.get('description')?.errors?.['required']">Description is required.</span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="type">Type<span class="required-star">*</span></label>
+          <select id="type" formControlName="type">
+            <option value="Task">Task</option>
+            <option value="Bug">Bug</option>
+          </select>
+          <div class="field-error" *ngIf="taskForm.get('type')?.touched && taskForm.get('type')?.invalid">
+            <span *ngIf="taskForm.get('type')?.errors?.['required']">Type is required.</span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="assign_to">Assigned To<span class="required-star">*</span></label>
+          <select id="assign_to" formControlName="assign_to">
+            <option *ngFor="let emp of employeeList" [value]="emp.id">{{ emp.name }}</option>
+          </select>
+          <div class="field-error" *ngIf="taskForm.get('assign_to')?.touched && taskForm.get('assign_to')?.invalid">
+            <span *ngIf="taskForm.get('assign_to')?.errors?.['required']">Assignee is required.</span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="status">Status<span class="required-star">*</span></label>
+          <select id="status" formControlName="status">
+            <option value="Todo">To-do</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Done">Done</option>
+          </select>
+          <div class="field-error" *ngIf="taskForm.get('status')?.touched && taskForm.get('status')?.invalid">
+            <span *ngIf="taskForm.get('status')?.errors?.['required']">Status is required.</span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="points">Points<span class="required-star">*</span></label>
+          <input
+            id="points"
+            type="number"
+            (keydown)="preventInvalidKeys($event)"
+            formControlName="points"
+            placeholder="Enter story points"
+          />
+          <div class="field-error" *ngIf="taskForm.get('points')?.touched && taskForm.get('points')?.invalid">
+            <span *ngIf="taskForm.get('points')?.errors?.['required']">Points are required.</span>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="estimated_hours">Estimated Hours<span class="required-star">*</span></label>
+          <input
+            id="estimated_hours"
+            (keydown)="preventInvalidKeys($event)"
+            type="number"
+            formControlName="estimated_hours"
+            placeholder="Enter estimated hours"
+          />
+          <div class="field-error" *ngIf="taskForm.get('estimated_hours')?.touched && taskForm.get('estimated_hours')?.invalid">
+            <span *ngIf="taskForm.get('estimated_hours')?.errors?.['required']">Estimated hours are required.</span>
+          </div>
         </div>
       </div>
 
-      <div class="form-field">
-        <label for="description">Description<span class="required-star">*</span></label>
-        <textarea id="description" rows="3" formControlName="description" placeholder="Enter task description"></textarea>
-        <div class="field-error" *ngIf="taskForm.get('description')?.touched && taskForm.get('description')?.invalid">
-          <span *ngIf="taskForm.get('description')?.errors?.['required']">Description is required.</span>
-        </div>
+      <div class="actions">
+        <button type="button" (click)="onCancel()">Cancel</button>
+        <button
+          type="submit"
+          class="bg-primary"
+          *ngIf="data.mode !== 'View'"
+        >
+          {{ data.mode }}
+        </button>
       </div>
-
-      <div class="form-field">
-        <label for="type">Type<span class="required-star">*</span></label>
-        <select id="type" formControlName="type">
-          <option value="Task">Task</option>
-          <option value="Bug">Bug</option>
-        </select>
-        <div class="field-error" *ngIf="taskForm.get('type')?.touched && taskForm.get('type')?.invalid">
-          <span *ngIf="taskForm.get('type')?.errors?.['required']">Type is required.</span>
-        </div>
-      </div>
-
-      <div class="form-field">
-        <label for="assign_to">Assigned To<span class="required-star">*</span></label>
-        <select id="assign_to" formControlName="assign_to">
-          <option *ngFor="let emp of employeeList" [value]="emp.id">{{ emp.name }}</option>
-        </select>
-        <div class="field-error" *ngIf="taskForm.get('assign_to')?.touched && taskForm.get('assign_to')?.invalid">
-          <span *ngIf="taskForm.get('assign_to')?.errors?.['required']">Assignee is required.</span>
-        </div>
-      </div>
-
-      <div class="form-field">
-        <label for="status">Status<span class="required-star">*</span></label>
-        <select id="status" formControlName="status">
-          <option value="Todo">To-do</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Done">Done</option>
-        </select>
-        <div class="field-error" *ngIf="taskForm.get('status')?.touched && taskForm.get('status')?.invalid">
-          <span *ngIf="taskForm.get('status')?.errors?.['required']">Status is required.</span>
-        </div>
-      </div>
-
-      <div class="form-field">
-        <label for="points">Points<span class="required-star">*</span></label>
-        <input id="points" type="number" (keydown)="preventInvalidKeys($event)" formControlName="points" placeholder="Enter story points" />
-        <div class="field-error" *ngIf="taskForm.get('points')?.touched && taskForm.get('points')?.invalid">
-          <span *ngIf="taskForm.get('points')?.errors?.['required']">Status is required.</span>
-        </div>
-      </div>
-
-
-      <div class="form-field">
-        <label for="estimated_hours">Estimated Hours<span class="required-star">*</span></label>
-        <input id="estimated_hours" (keydown)="preventInvalidKeys($event)" type="number" formControlName="estimated_hours" placeholder="Enter estimated hours" />
-         <div class="field-error" *ngIf="taskForm.get('points')?.touched && taskForm.get('points')?.invalid">
-          <span *ngIf="taskForm.get('points')?.errors?.['required']">Status is required.</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="actions">
-      <button type="button" (click)="onCancel()">Cancel</button>
-      <button type="submit" class="bg-primary" *ngIf="this.data.mode!='View'">{{ data.mode }}</button>
-    </div>
-  </form>
+    </form>
   </div>
 </div>

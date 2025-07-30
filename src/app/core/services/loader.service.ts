@@ -10,13 +10,11 @@ export class LoaderService {
   private requestCount = 0;
 
   show() {
-    console.warn('🔄 Loader SHOW triggered');
     this.requestCount++;
     this.loading.next(true);
   }
 
   hide() {
-    console.warn('🔄 Loader Hide triggered');
     this.requestCount--;
     if (this.requestCount === 0) {
       this.loading.next(false);

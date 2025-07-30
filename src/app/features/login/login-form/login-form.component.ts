@@ -50,6 +50,7 @@ export class LoginFormComponent {
         .then(async ({ data, error }) => {
           if (error || !data.session) {
             this.loginError = 'Invalid credentials';
+            this.alert.sidePopUp('Invalid credentials','error');
             this.loader.hide();
             return;
           }
@@ -68,11 +69,9 @@ export class LoginFormComponent {
           if (empErr || !employeeData) {
             this.loginError = 'Employee fetch failed';
             this.loader.hide();
+            this.alert.sidePopUp('Employee is not present in db','error');
             return;
           }
-
-          // this.sharedService.setUserId(employeeData.id);
-          // this.sharedService.setUserRole(employeeData.role);
 
           this.loader.hide();
           this.router.navigate(['/dashboard']);

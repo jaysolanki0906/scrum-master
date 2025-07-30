@@ -37,16 +37,16 @@
           <span *ngIf="loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched">Password must be at least 6 characters</span>
         </div>
       </div>
-
+      <div class="dialog-container">
+  <div class="dialog-header">
+    <a routerLink="/register" class="register-link">Register Yourself</a>
+  </div></div>
 
       <button
         type="submit"
-        class="login-button"
-      >
+        class="login-button">
         <span >Sign In</span>
-        
       </button>
     </form>
-
   </div>
 </div>

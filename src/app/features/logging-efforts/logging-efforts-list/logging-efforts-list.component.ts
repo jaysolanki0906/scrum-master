@@ -26,6 +26,7 @@ export class LoggingEffortsListComponent {
   taskMap: { [key: number]: string } = {};
   id: string = '';
   sprintId: string = '';
+  status: boolean = false;
 
   constructor(
     private loggingEffortService: LoggingEffortService,
@@ -74,19 +75,24 @@ export class LoggingEffortsListComponent {
   }
 
   fetchEfforts() {
-    this.loader.show();
-    this.loggingEffortService.getAllEfforts(this.id).subscribe({
-      next: (data: LoggingEffort[]) => {
-        this.loggingEfforts = data;
-        this.loader.hide();
-      },
-      error: (err: any) => {
-        console.error('Failed to load logging efforts:', err);
-        this.alertService.sidePopUp('Could not fetch logging efforts', 'error');
-        this.loader.hide();
-      },
-    });
-  }
+  const userId = this.shared.getUserId();  // logged-in user's ID
+  if (!userId) return;
+
+  this.loader.show();
+
+  this.loggingEffortService.getAllEfforts(this.id, userId).subscribe({
+    next: (data: LoggingEffort[]) => {
+      this.loggingEfforts = data;
+      this.loader.hide();
+    },
+    error: (err: any) => {
+      console.error('Failed to load logging efforts:', err);
+      this.alertService.sidePopUp('Could not fetch logging efforts', 'error');
+      this.loader.hide();
+    },
+  });
+}
+
 
   add(): void {
     this.dialog

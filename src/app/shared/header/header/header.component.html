@@ -1,55 +1,69 @@
-<header>
+<header class="app-header">
   <div class="container">
     <div class="header-content">
+      <!-- Project Selector -->
       <div class="logo">
         <select (change)="onProjectChange($event)" class="project-dropdown">
-  <option *ngFor="let project of projectList" [value]="project.id">
-    {{ project.projectName }}
-  </option>
-</select>
-
+          <option *ngFor="let project of projectList" [value]="project.id">
+            {{ project.projectName }}
+          </option>
+        </select>
       </div>
 
+      <!-- Desktop Navigation -->
       <nav class="nav-menu">
         <button class="nav-item" (click)="dashboardNavigate()">
-          <span class="material-icons">bar_chart</span>
-          <span>Dashboard</span>
+          <span class="material-icons icon">bar_chart</span>
+          <span class="label">Dashboard</span>
         </button>
+        
         <button class="nav-item" (click)="projectNavigate()" *ngIf="role == 'Admin'">
-          <i class="fa-solid fa-list-check"></i>
-          <span>Projects</span>
+          <i class="fa-solid fa-list-check icon"></i>
+          <span class="label">Projects</span>
         </button>
+        
         <button class="nav-item" (click)="sprintNavigate()" *ngIf="role == 'Admin'">
-          <i class="fa-solid fa-diagram-project"></i>
-          <span>Sprint</span>
+          <i class="fa-solid fa-diagram-project icon"></i>
+          <span class="label">Sprint</span>
         </button>
+        
         <button class="nav-item" (click)="storyNaviagation()">
-          <i class="fa-solid fa-book-open"></i>
-          <span>Scrum board</span> 
+          <i class="fa-solid fa-book-open icon"></i>
+          <span class="label">Scrum board</span>
         </button>
+        
         <button class="nav-item" (click)="employeeNaviagation()" *ngIf="role == 'Admin'">
-          <i class="fa-solid fa-users"></i>
-          <span>Employees</span>
+          <i class="fa-solid fa-users icon"></i>
+          <span class="label">Employees</span>
         </button>
+        
         <button class="nav-item" (click)="myProfile()">
-          <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="35px" fill="#FFFFFF"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z"/></svg>
-          <span>My Profile</span>
+          <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="24" height="24" fill="currentColor">
+            <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Z"/>
+          </svg>
+          <span class="label">My Profile</span>
         </button>
+        
         <button class="nav-item" (click)="logout()">
-          <span class="material-icons">logout</span>
-          <span>Logout</span>
+          <span class="material-icons icon">logout</span>
+          <span class="label">Logout</span>
         </button>
       </nav>
 
+      <!-- Mobile Menu Toggle -->
       <button class="mobile-menu-btn" (click)="toggleMobileMenu()">
         <span class="material-icons">menu</span>
       </button>
     </div>
 
+    <!-- Mobile Navigation -->
     <div class="mobile-menu" [class.hidden]="!isMobileMenuOpen">
-      <button class="mobile-nav-item">Home</button>
-      <button class="mobile-nav-item" routerLink="/dashboard">Dashboard</button>
-      <button class="mobile-nav-item">Orders</button>
+      <button class="mobile-nav-item" (click)="dashboardNavigate()">Dashboard</button>
+      <button class="mobile-nav-item" *ngIf="role == 'Admin'" (click)="projectNavigate()">Projects</button>
+      <button class="mobile-nav-item" *ngIf="role == 'Admin'" (click)="sprintNavigate()">Sprint</button>
+      <button class="mobile-nav-item" (click)="storyNaviagation()">Scrum board</button>
+      <button class="mobile-nav-item" *ngIf="role == 'Admin'" (click)="employeeNaviagation()">Employees</button>
+      <button class="mobile-nav-item" (click)="myProfile()">My Profile</button>
       <button class="mobile-nav-item" (click)="passwordChnage()">Change Password</button>
       <button class="mobile-nav-item" (click)="logout()">Logout</button>
     </div>

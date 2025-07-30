@@ -9,18 +9,20 @@ import { LoggingEffort } from '../models/loggingefforts.model';
 export class LoggingEffortService {
 
   constructor(private supabase:SupabaseService) { }
-  getAllEfforts(id:string) {
-    return from(
-      this.supabase.client
-        .from('loggingefforts')
-        .select('*')
-        .eq('task_id',id)
-        .then(({ data, error }) => {
-          if (error) throw error;
-          return data as LoggingEffort[];
-        })
-    );
-  }
+  getAllEfforts(taskId: string, userId: string) {
+  return from(
+    this.supabase.client
+      .from('loggingefforts')
+      .select('*')
+      .eq('task_id', taskId)
+      .eq('logged_by', userId) 
+      .then(({ data, error }) => {
+        if (error) throw error;
+        return data as LoggingEffort[];
+      })
+  );
+}
+
   addLogginEfforts(paylaod:LoggingEffort)
   {
     return from(

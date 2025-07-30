@@ -4,7 +4,87 @@
   width: 100%;
   margin-bottom: 1rem;
 }
+// Add to your existing styles
+.dates-row .content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
+.date-group {
+  flex: 1;
+}
+
+.date-separator {
+  width: 2px;
+  height: 30px;
+  background: linear-gradient(180deg, transparent, #e2e8f0, transparent);
+}
+
+.system-info {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.system-row {
+  background: #f1f5f9 !important;
+  
+  .icon-wrapper {
+    background: #ffffff;
+    
+    svg {
+      color: #64748b;
+    }
+  }
+  
+  .label {
+    color: #64748b;
+    font-size: 0.75rem;
+  }
+  
+  .value {
+    color: #475569;
+    font-size: 0.875rem;
+    font-family: 'Courier New', monospace;
+  }
+
+  &:hover {
+    background: #f8fafc !important;
+    transform: none;
+  }
+}
+
+// Dark mode adjustments
+@media (prefers-color-scheme: dark) {
+  .date-separator {
+    background: linear-gradient(180deg, transparent, #475569, transparent);
+  }
+
+  .system-info {
+    border-top-color: #475569;
+  }
+
+  .system-row {
+    background: #1e293b !important;
+    
+    .icon-wrapper {
+      background: #334155;
+    }
+    
+    .label {
+      color: #94a3b8;
+    }
+    
+    .value {
+      color: #e2e8f0;
+    }
+
+    &:hover {
+      background: #262f3f !important;
+    }
+  }
+}
 .action-btn.view {
   background: transparent;
   border: 2px solid #333435;

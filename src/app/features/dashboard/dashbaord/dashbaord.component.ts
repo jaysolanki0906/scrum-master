@@ -1,26 +1,50 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
+import { ChartOptions } from 'chart.js';
 
 @Component({
   selector: 'app-dashbaord',
-  standalone: false,
+  standalone:false,
   templateUrl: './dashbaord.component.html',
   styleUrls: ['./dashbaord.component.scss']
 })
 export class DashbaordComponent implements OnInit {
   data: any;
   loaded = false;
+chartOptionsDoughnut: ChartOptions<'doughnut'> = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'bottom' as const  
+      }
+    }
+  };
 
+  chartOptionsBar: ChartOptions<'bar'> = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const  
+      }
+    }
+  };
+
+  chartOptionsLine: ChartOptions<'line'> = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'right' as const  
+      }
+    }
+  };
   constructor(private dashboardService: AuthService) {}
 
   ngOnInit(): void {
     this.dashboardService.getDashboardData().subscribe({
       next: (res: any) => {
-        if (Array.isArray(res)) {
-          this.data = res[0];
-        } 
+        this.data = res;
         this.loaded = true;
-        console.log("This is data", this.data, "this is response", res);
+        console.log("Dashboard data:", this.data);
       },
       error: (err) => {
         console.error('Error loading dashboard data:', err);
@@ -29,49 +53,47 @@ export class DashbaordComponent implements OnInit {
   }
 
   get taskStatusChart() {
-    const { done = 0, inProgress = 0, todo = 0 } = this.data?.summary?.taskStatus || {};
+    if (!this.data?.summary?.taskStatus) return { labels: [], datasets: [] };
+    const { done = 0, inProgress = 0, todo = 0 } = this.data.summary.taskStatus;
     return {
-      labels: ['Done', 'In Progress', 'To-do'],
-      datasets: [
-        {
-          data: [done, inProgress, todo],
-          backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
-          hoverOffset: 6
-        }
-      ]
+      labels: ['Done', 'In Progress', 'Todo'],
+      datasets: [{
+        data: [done, inProgress, todo],
+        backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+        hoverOffset: 6
+      }]
     };
   }
 
   get taskTypeChart() {
-    const { tasks = 0, bugs = 0 } = this.data?.charts?.taskType || {};
+    if (!this.data?.charts?.taskType) return { labels: [], datasets: [] };
+    const { tasks = 0, bugs = 0 } = this.data.charts.taskType;
     return {
       labels: ['Tasks', 'Bugs'],
-      datasets: [
-        {
-          data: [tasks, bugs],
-          backgroundColor: ['#3b82f6', '#ef4444'],
-          hoverOffset: 6
-        }
-      ]
+      datasets: [{
+        data: [tasks, bugs],
+        backgroundColor: ['#3b82f6', '#ef4444'],
+        hoverOffset: 6
+      }]
     };
   }
 
   get sprintVelocityChart() {
-    const { sprints = [], storyPoints = [] } = this.data?.charts?.sprintVelocity || {};
+    if (!this.data?.charts?.sprintVelocity) return { labels: [], datasets: [] };
+    const { sprints = [], storyPoints = [] } = this.data.charts.sprintVelocity;
     return {
       labels: sprints,
-      datasets: [
-        {
-          label: 'Story Points',
-          data: storyPoints,
-          backgroundColor: 'rgba(59, 130, 246, 0.8)'
-        }
-      ]
+      datasets: [{
+        label: 'Story Points',
+        data: storyPoints,
+        backgroundColor: 'rgba(59, 130, 246, 0.8)'
+      }]
     };
   }
 
   get hoursBurndownChart() {
-    const { sprints = [], estimated = [], logged = [] } = this.data?.charts?.hoursBurndown || {};
+    if (!this.data?.charts?.hoursBurndown) return { labels: [], datasets: [] };
+    const { sprints = [], estimated = [], logged = [] } = this.data.charts.hoursBurndown;
     return {
       labels: sprints,
       datasets: [
@@ -94,4 +116,13 @@ export class DashbaordComponent implements OnInit {
       ]
     };
   }
+
+  chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'bottom'
+      }
+    }
+  };
 }

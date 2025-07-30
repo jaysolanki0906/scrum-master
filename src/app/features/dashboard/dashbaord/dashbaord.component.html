@@ -1,11 +1,8 @@
-<div class="summary-cards" >
+<div class="summary-cards" *ngIf="data">
   <div class="summary-card">
     <div class="card-title">Total Projects</div>
     <div class="card-value">{{ data.summary.totalProjects }}</div>
-    <div class="card-subtitle">
-      {{ data.summary.projects.active }} Active,
-      {{ data.summary.projects.completed }} Completed
-    </div>
+    
   </div>
   <div class="summary-card">
     <div class="card-title">Total Task</div>
@@ -19,10 +16,6 @@
   <div class="summary-card">
     <div class="card-title">Total Bugs</div>
     <div class="card-value">{{ data.summary.totalBugs }}</div>
-    <div class="card-subtitle">
-      {{ data.summary.bugs.critical }} Critical,
-      {{ data.summary.bugs.normal }} Normal
-    </div>
   </div>
 </div>
 
@@ -43,19 +36,4 @@
     </canvas>
   </div>
 
-  <div class="chart-container">
-    <div class="chart-title">Sprint Velocity</div>
-    <canvas baseChart
-            [data]="sprintVelocityChart"
-            [type]="'bar'">
-    </canvas>
-  </div>
 
-  <div class="chart-container">
-    <div class="chart-title">Hours Burndown</div>
-    <canvas baseChart
-            [data]="hoursBurndownChart"
-            [type]="'line'">
-    </canvas>
-  </div>
-</div>

@@ -17,21 +17,21 @@ import { Task } from '../../core/models/task.model';
 export class CommonTableComponent implements OnInit{
 
   employeeList:Employee[]=[];
-  constructor(private loaderService:LoaderService,private alert:AlertService,private employee:EmployeeService){}
-ngOnInit(): void {
-    this.getEmployee();
-}
   @Input() headers: string[] = [];
   @Input() keys: string[] = [];
   @Input() data: any[] = [];
-@Input() taskMap:{ [key: number]: string } = {};
+  @Input() taskMap:{ [key: number]: string } = {};
+  @Input() title:string='';
 
   @Output() add = new EventEmitter<void>();
   @Output() edit = new EventEmitter<any>();
   @Output() view = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
-
-
+  constructor(private loaderService:LoaderService,private alert:AlertService,private employee:EmployeeService){}
+ngOnInit(): void {
+    this.getEmployee();
+    console.log("this is title",this.title);
+}
   getEmployee() {
     this.loaderService.show();
     this.employee.getEmployees().subscribe({

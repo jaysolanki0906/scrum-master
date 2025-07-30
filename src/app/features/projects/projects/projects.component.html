@@ -1,10 +1,9 @@
-
-
 <app-common-table
   [headers]="['Project Name', 'Description', 'Start Date', 'End Date', 'Owner']"
   [keys]="['projectName', 'description', 'startDate', 'endDate', 'owner']"
   [data]="projects"
   (add)="add()"
+  title="Project"
   (edit)="edit($event)"
   (view)="view($event)"
   (delete)="onDelete($event)"

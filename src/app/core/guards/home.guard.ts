@@ -39,6 +39,7 @@ export const homeGuard: CanActivateFn = async (
 
     sharedService.setUserId(empData.id);
     sharedService.setUserRole(empData.role);
+    sharedService.setUserName(empData.name);
 
     return true;
   } catch (err) {

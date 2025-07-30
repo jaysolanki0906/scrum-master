@@ -3,9 +3,10 @@
 
   <form [formGroup]="sprintForm" (ngSubmit)="onSubmit()">
     <div class="form-grid">
-
       <div class="form-field">
-        <label for="sprintName">Sprint Name<span class="required-star">*</span></label>
+        <label for="sprintName"
+          >Sprint Name<span class="required-star">*</span></label
+        >
         <input
           id="sprintName"
           type="text"
@@ -55,14 +56,16 @@
 
       <div class="date-fields">
         <div class="date-field">
-          <label for="startDate">Start Date <span class="required-star">*</span></label>
+          <label for="startDate"
+            >Start Date <span class="required-star">*</span></label
+          >
           <input
             type="date"
             id="startDate"
             formControlName="startDate"
             [disabled]="data.mode === 'View'"
             [min]="minDate"
-  [max]="maxDate"
+            [max]="maxDate"
             placeholder="Select start date"
           />
           <div
@@ -79,14 +82,16 @@
         </div>
 
         <div class="date-field">
-          <label for="endDate">End Date <span class="required-star">*</span></label>
+          <label for="endDate"
+            >End Date <span class="required-star">*</span></label
+          >
           <input
             type="date"
             id="endDate"
             formControlName="endDate"
             [disabled]="data.mode === 'View'"
             [min]="minDate"
-  [max]="maxDate"
+            [max]="maxDate"
             placeholder="Select end date"
           />
           <div
@@ -130,11 +135,7 @@
 
     <div class="actions">
       <button type="button" (click)="onCancel()">Cancel</button>
-      <button
-        *ngIf="data.mode !== 'View'"
-        type="submit"
-        class="bg-primary"
-      >
+      <button *ngIf="data.mode !== 'View'" type="submit">
         {{ data.mode }}
       </button>
     </div>

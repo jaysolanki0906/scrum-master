@@ -6,7 +6,12 @@
 
       <div class="form-field">
         <label for="title">Title<span class="required-star">*</span></label>
-        <input id="title" type="text" formControlName="title" placeholder="Enter story title" />
+        <input
+          id="title"
+          type="text"
+          formControlName="title"
+          placeholder="Enter story title"
+        />
         <div class="field-error" *ngIf="storyForm.get('title')?.touched && storyForm.get('title')?.invalid">
           <span *ngIf="storyForm.get('title')?.errors?.['required']">Title is required.</span>
           <span *ngIf="storyForm.get('title')?.errors?.['minlength']">Minimum 3 characters required.</span>
@@ -15,7 +20,12 @@
 
       <div class="form-field">
         <label for="description">Description<span class="required-star">*</span></label>
-        <textarea id="description" rows="3" formControlName="description" placeholder="Enter description"></textarea>
+        <textarea
+          id="description"
+          rows="3"
+          formControlName="description"
+          placeholder="Enter description"
+        ></textarea>
         <div class="field-error" *ngIf="storyForm.get('description')?.touched && storyForm.get('description')?.invalid">
           <span *ngIf="storyForm.get('description')?.errors?.['required']">Description is required.</span>
           <span *ngIf="storyForm.get('description')?.errors?.['minlength']">Minimum 5 characters required.</span>
@@ -25,7 +35,7 @@
       <div class="form-field">
         <label for="status">Status<span class="required-star">*</span></label>
         <select id="status" formControlName="status">
-          <option value="Planned" selected>Planned</option>
+          <option value="Planned">Planned</option>
           <option value="In Progress">In Progress</option>
           <option value="Completed">Completed</option>
         </select>
