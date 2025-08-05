@@ -7,18 +7,29 @@ import { Project } from '../models/project.model';
   providedIn: 'root',
 })
 export class ProductService {
-  constructor(private supabaseService: SupabaseService) {}
+  constructor(private supabaseService: SupabaseService) { }
 
-  getProjectsData(): Observable<Project[]> {
+  getProjectsData(filters?: any): Observable<Project[]> {
+    let query = this.supabaseService.client
+      .from('projects')
+      .select('*')
+      .order('id', { ascending: true });
+
+    if (filters?.search) {
+      query = query.ilike('projectName', `%${filters.search}%`);
+    }
+
+    if (filters?.start_date && filters?.end_date) {
+      query = query
+        .gte('startDate', filters.start_date)
+        .lte('endDate', filters.end_date);
+    }
+
     return from(
-      this.supabaseService.client
-        .from('projects')
-        .select('*')
-        .order('id', { ascending: true })
-        .then(({ data, error }) => {
-          if (error) throw error;
-          return data as Project[];
-        })
+      query.then(({ data, error }) => {
+        if (error) throw error;
+        return data as Project[];
+      })
     );
   }
 
@@ -61,13 +72,12 @@ export class ProductService {
         })
     );
   }
-  getProjectById(id:string)
-  {
+  getProjectById(id: string) {
     return from(
-      this.supabaseService.client.from('projects').select('*').eq('id',id).then(({ data,error }) => {
-          if (error) throw error;
-          return data;
-        })
+      this.supabaseService.client.from('projects').select('*').eq('id', id).then(({ data, error }) => {
+        if (error) throw error;
+        return data;
+      })
     );
   }
 }

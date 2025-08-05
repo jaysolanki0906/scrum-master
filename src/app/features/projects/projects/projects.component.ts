@@ -18,7 +18,14 @@ export class ProjectsComponent implements OnInit {
 
   projects: Project[] = [];
   employeeList: Employee[] = [];
-
+  searchFields = [
+  
+  { label: 'Start Date', key: 'start_date', type: 'date' },
+  { label: 'End Date', key: 'end_date', type: 'date' }
+];
+values = {
+  status: ''
+};
   searchText: string = '';
 
   constructor(
@@ -56,17 +63,39 @@ export class ProjectsComponent implements OnInit {
   }
 
   fetchProjects() {
-    this.product.getProjectsData().subscribe({
-      next: (res) => {
-        this.projects = res;
-        console.log(res);
-        
-      },
-      error: (err) => {
-        this.alert.sidePopUp(err.message,'error');
-      }
-    });
-  }
+  const filters = {
+    ...this.values,
+    projectName: this.searchText
+  };
+
+  this.loaderService.show();
+
+  this.product.getProjectsData(filters).subscribe({
+    next: (res) => {
+      this.projects = res;
+      console.log('Filtered projects:', res);
+      this.loaderService.hide();
+    },
+    error: (err) => {
+      this.alert.sidePopUp(err.message, 'error');
+      this.loaderService.hide();
+    }
+  });
+}
+
+  onFilter(data: any) {
+  console.log('Filter:', data);
+  this.values = data;
+  this.fetchProjects();
+}
+onClear() {
+  this.values = {
+    status: '',
+  };
+
+  this.searchText = '';
+  this.fetchProjects();
+}
 
   edit(project: any) {
    

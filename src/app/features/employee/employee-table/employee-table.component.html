@@ -7,4 +7,8 @@
   (edit)="edit($event)"
   (view)="view($event)"
   (delete)="onDelete($event)"
+  (filter)="onFilter($event)"
+  (clear)="onClear()"
+  [values]="values"
+  [fields]="searchFields"
 ></app-common-table>

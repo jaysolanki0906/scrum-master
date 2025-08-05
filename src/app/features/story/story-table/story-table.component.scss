@@ -1,1020 +1,827 @@
+// Complete Angular Scrum Board SCSS
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* STORY ACTION BUTTONS */
-.story-stats {
-  display: flex;
-  gap: 0px;
-}
-
-.story-stats button {
-  background: none;
-  border: none;
-  color: #666;
-  font-size: 14px;
-  padding: 4px 8px;
-  cursor: pointer;
-  font-family: inherit;
-  transition: color 0.2s ease;
-}
-
-.story-stats button:hover {
-  color: #333;
-}
-
-.story-stats button:active {
-  color: #000;
-}
-
-.story-stats button:focus {
-  outline: 1px dotted #666;
-  outline-offset: 2px;
-}
-
-/* BOARD STRUCTURE */
+// Main Scrum Board Container
 .scrum-board {
   background: white;
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.left-section {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.sprint-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: #6b7280;
-}
-
-.date-range {
-  color: #9ca3af;
-}
-
-.right-section {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.controls {
-  display: flex;
-  gap: 4px;
-}
-
-.control-btn {
-  width: 65px;
-  height: 32px;
-  border: 1px solid #d1d5db;
-  background: white;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-}
-
-.search-container {
-  display: flex;
-  align-items: center;
-}
-
-.search-input {
-  padding: 8px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 4px 0 0 4px;
-  font-size: 14px;
-  width: 200px;
-}
-
-.search-btn {
-  padding: 8px 12px;
-  border: 1px solid #d1d5db;
-  border-left: none;
-  background: #f9fafb;
-  border-radius: 0 4px 4px 0;
-  cursor: pointer;
-}
-
-.board-table-container {
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.scrum-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.scrum-table th {
-  background: #f8f9fa;
-  padding: 15px;
-  text-align: left;
-  font-weight: 600;
-  border-bottom: 2px solid #dee2e6;
-}
-
-.story-column {
-  width: 25%;
-  background: #e3f2fd;
-}
-
-// .task-column {
-//   width: 100% !important;
-// }
-
-.todo-column {
-  background: #fff3e0;
-}
-
-.progress-column {
-  background: #e8f5e8;
-}
-
-.done-column {
-  background: #f3e5f5;
-}
-
-.story-row {
-  border-bottom: 1px solid #dee2e6;
-}
-
-.story-cell, .task-cell {
-  padding: 15px;
-  vertical-align: top;
-  border-right: 1px solid #dee2e6;
-}
-
-/* STORY CARD */
-.story-card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  padding: 12px;
-  position: relative;
-}
-
-.story-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  flex-wrap: wrap;
-}
-
-.story-id {
-  color: #6366f1;
-  font-weight: 500;
-  font-size: 12px;
-}
-
-.story-title {
-  margin-bottom: 10px;
-  color: #333;
-  font-size: 14px;
-}
-
-.story-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-  font-size: 11px;
-}
-
-.team-badge {
-  background: #e3f2fd;
-  color: #1976d2;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-}
-
-.story-actions {
-  display: flex;
-  gap: 5px;
-}
-
-.action-btn {
-  background: none;
-  border: 1px solid #ddd;
-  padding: 4px 8px;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.action-btn:hover {
-  background: #f5f5f5;
-}
-
-/* TASKS */
-.task-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.task-card {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  padding: 10px;
-  margin-bottom: 8px;
-}
-
-.todo-task {
-  border-left: 4px solid #ff9800;
-}
-
-.progress-task {
-  border-left: 4px solid #4caf50;
-}
-
-.done-task {
-  border-left: 4px solid #9c27b0;
-}
-
-.task-header {
-  margin-bottom: 6px;
-}
-
-.task-id {
-  font-weight: 600;
-  color: #333;
-  font-size: 13px;
-}
-
-.task-description {
-  margin-bottom: 8px;
-  color: #666;
-  font-size: 12px;
-}
-
-.task-details {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-
-.task-estimate, .task-points, .task-type {
-  background: #f5f5f5;
-  padding: 2px 6px;
-  border-radius: 10px;
-  font-size: 11px;
-  color: #666;
-}
-
-.task-progress {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-
-.progress-bar {
-  flex: 1;
-  height: 6px;
-  background: #e0e0e0;
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: #4caf50;
-  transition: width 0.3s ease;
-}
-
-.progress-text {
-  font-size: 11px;
-  color: #666;
-}
-
-.task-completion {
-  margin-bottom: 6px;
-}
-
-.completion-badge {
-  background: #4caf50;
-  color: white;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 11px;
-}
-
-.task-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: #888;
-}
-
-.no-tasks {
-  text-align: center;
-  color: #999;
-  font-style: italic;
-  padding: 20px;
-  background: #f9f9f9;
-  border-radius: 4px;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    gap: 12px;
-  }
-  .left-section,
-  .right-section {
-    width: 100%;
-  }
-}
-.story-header {
-  display: flex;
-  justify-content: space-between; // This spreads out the title and + button
-  align-items: center;
-  margin-bottom: 8px;
-  position: relative;
-}
-
-.add-task-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #f0f0f000;
-  border: none;
-  color: #666666;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 0;
-  line-height: 1;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: #e0e0e0;
-    color: #333;
-    transform: scale(1.05);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-}
-.scrum-board {
   padding: 20px;
   background-color: #f5f5f5;
-}
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 15px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.left-section {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.sprint-dropdown select {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.right-section {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.control-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;                
-  background: #f8f8f8;
-  color: rgb(4, 4, 4);
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  white-space: nowrap;  
-}
-
-
-.search-container {
-  display: flex;
-  gap: 5px;
-}
-
-.search-input {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.search-btn {
-  background: #6c757d;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.board-table-container {
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.scrum-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.scrum-table th {
-  background: #f8f9fa;
-  padding: 15px;
-  text-align: left;
-  font-weight: 600;
-  border-bottom: 2px solid #dee2e6;
-}
-
-.story-column {
-  width: 25%;
-  background: #e3f2fd;
-}
-
-.task-column {
-  width: 25%;
-}
-
-.todo-column {
-  background: #fff3e0;
-}
-
-.progress-column {
-  background: #e8f5e8;
-}
-
-.done-column {
-  background: #f3e5f5;
-}
-
-.story-row {
-  border-bottom: 1px solid #dee2e6;
-}
-
-.story-cell, .task-cell {
-  padding: 15px;
-  vertical-align: top;
-  border-right: 1px solid #dee2e6;
-}
-
-.story-card {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  padding: 12px;
-}
-
-.story-header {
-  margin-bottom: 8px;
-}
-
-.story-id {
-  font-weight: 600;
-  color: #1976d2;
-}
-
-.story-title {
-  margin-bottom: 10px;
-  color: #333;
-  font-size: 14px;
-}
-
-.story-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.team-badge {
-  background: #e3f2fd;
-  color: #1976d2;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-}
-
-.story-actions {
-  display: flex;
-  gap: 5px;
-}
-
-.action-btn {
-  background: none;
-  border: 1px solid #ddd;
-  padding: 4px 8px;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.action-btn:hover {
-  background: #f5f5f5;
-}
-
-.task-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.task-card {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  padding: 10px;
-  margin-bottom: 8px;
-}
-
-.todo-task {
-  border-left: 4px solid #ff9800;
-}
-
-.progress-task {
-  border-left: 4px solid #4caf50;
-}
-
-.done-task {
-  border-left: 4px solid #9c27b0;
-}
-
-.task-header {
-  margin-bottom: 6px;
-}
-
-.task-id {
-  font-weight: 600;
-  color: #333;
-  font-size: 13px;
-}
-
-.task-description {
-  margin-bottom: 8px;
-  color: #666;
-  font-size: 12px;
-}
-
-.task-details {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-
-.task-estimate, .task-points, .task-type {
-  background: #f5f5f5;
-  padding: 2px 6px;
-  border-radius: 10px;
-  font-size: 11px;
-  color: #666;
-}
-
-.task-progress {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-
-.progress-bar {
-  flex: 1;
-  height: 6px;
-  background: #e0e0e0;
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: #4caf50;
-  transition: width 0.3s ease;
-}
-
-.progress-text {
-  font-size: 11px;
-  color: #666;
-}
-
-.task-completion {
-  margin-bottom: 6px;
-}
-
-.completion-badge {
-  background: #4caf50;
-  color: white;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 11px;
-}
-
-.task-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: #888;
-}
-
-.no-tasks {
-  text-align: center;
-  color: #999;
-  font-style: italic;
-  padding: 20px;
-  background: #f9f9f9;
-  border-radius: 4px;
-}
-// Enhanced 3-dot menu styles for Scrum board
-.task-card {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  padding: 10px;
-  margin-bottom: 8px;
-  position: relative;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-
-  &:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transform: translateY(-1px);
-  }
-
-  // Different colored left borders for different task types
-  &.todo-task {
-    border-left: 4px solid #ff9800;
-  }
-
-  &.progress-task {
-    border-left: 4px solid #4caf50;
-  }
-
-  &.done-task {
-    border-left: 4px solid #9c27b0;
-  }
-}
-
-.task-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 6px;
-  position: relative;
-
-  .task-id {
-    font-weight: 600;
-    color: #333;
-    font-size: 13px;
-    flex: 1;
-    margin-right: 8px;
-  }
-}
-
-.task-options {
-  position: relative;
-  display: flex;
-  align-items: center;
-  z-index: 10;
-
-  .options-button {
+  // Header Section
+  .header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    background: transparent;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    color: #666;
-    transition: all 0.2s ease;
-    padding: 0;
-    line-height: 1;
-    
-    // Smooth fade in animation
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(0.8);
-    
-    &:hover {
-      background: rgba(0, 0, 0, 0.05);
-      color: #333;
-      transform: scale(1);
-    }
+    padding: 20px;
+    background: rgba(37, 99, 235, 0.1);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-    &:active {
-      background: rgba(0, 0, 0, 0.1);
-      transform: scale(0.95);
-    }
+    // Left Section - Title
+    .left-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
 
-    &:focus {
-      outline: 2px solid #2196f3;
-      outline-offset: 1px;
-    }
-
-    // Show button when task card is hovered or menu is open
-    .task-card:hover &,
-    &.menu-open {
-      opacity: 1;
-      visibility: visible;
-      transform: scale(1);
-    }
-  }
-
-  .task-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    list-style: none;
-    margin: 0;
-    padding: 4px 0;
-    min-width: 120px;
-    z-index: 1000;
-    
-    // Smooth dropdown animation
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-8px) scale(0.95);
-    transition: all 0.2s ease;
-    
-    &.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0) scale(1);
-    }
-
-    li {
-      margin: 0;
-      padding: 0;
-
-      &:first-child {
-        border-radius: 6px 6px 0 0;
+      .page-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 4px;
+        position: relative;
       }
 
-      &:last-child {
-        border-radius: 0 0 6px 6px;
+      .title-underline {
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #2563eb, #3b82f6);
+        border-radius: 2px;
       }
+    }
 
-      &:only-child {
-        border-radius: 6px;
-      }
+    // Right Section - Controls
+    .right-section {
+      display: flex;
+      align-items: center;
+      gap: 20px;
 
-      button,
-      a,
-      span {
-        display: block;
-        width: 100%;
-        padding: 8px 12px;
-        text-align: left;
-        background: none;
-        border: none;
-        color: #333;
-        font-size: 13px;
-        cursor: pointer;
-        transition: background-color 0.15s ease;
-        text-decoration: none;
+      .sprint-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
 
-        &:hover {
-          background: #f5f5f5;
-          color: #000;
-        }
+        .sprint-dropdown {
+          display: flex;
+          align-items: center;
+          gap: 8px;
 
-        &:active {
-          background: #e8e8e8;
-        }
+          label {
+            font-size: 14px;
+            color: #4b5563;
+            font-weight: 500;
+          }
 
-        // Different colors for different actions
-        &.view-action {
-          &:hover {
-            background: rgba(33, 150, 243, 0.1);
-            color: #2196f3;
+          select {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+            color: #374151;
+            font-size: 14px;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+
+            &:focus {
+              outline: none;
+              border-color: #2563eb;
+              box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            }
+
+            &:hover {
+              border-color: #9ca3af;
+            }
           }
         }
 
-        &.edit-action {
-          &:hover {
-            background: rgba(255, 152, 0, 0.1);
-            color: #ff9800;
-          }
-        }
+        .sprint-details {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 14px;
+          color: #6b7280;
 
-        &.delete-action {
-          &:hover {
-            background: rgba(244, 67, 54, 0.1);
-            color: #f44336;
+          .sprint-name {
+            font-weight: 500;
+            color: #374151;
+          }
+
+          .date-range {
+            color: #9ca3af;
+            font-size: 13px;
           }
         }
       }
 
-      // Add separator between menu items
-      &:not(:last-child)::after {
-        content: '';
-        display: block;
-        height: 1px;
-        background: #f0f0f0;
-        margin: 2px 8px;
-      }
-    }
-  }
-}
+      .controls {
+        display: flex;
+        gap: 10px;
 
-// Enhanced task card hover states for better UX
-.task-card {
-  .task-options .options-button {
-    transition: opacity 0.2s ease 0.1s, visibility 0.2s ease 0.1s, transform 0.2s ease;
-  }
+        .control-btn {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background: #2563eb;
+          color: white;
+          border: none;
+          padding: 10px 16px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 500;
+          transition: all 0.2s ease;
+          white-space: nowrap;
 
-  &:hover .task-options .options-button {
-    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
-  }
-}
-
-// Backdrop for mobile/touch devices
-.menu-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: transparent;
-  z-index: 999;
-  display: none;
-
-  &.active {
-    display: block;
-  }
-}
-
-// Responsive adjustments
-@media (max-width: 768px) {
-  .task-options {
-    .options-button {
-      // Always show on mobile for better touch accessibility
-      opacity: 1;
-      visibility: visible;
-      transform: scale(1);
-      width: 24px;
-      height: 24px;
-      font-size: 18px;
-    }
-
-    .task-menu {
-      right: -8px; // Slight adjustment for mobile
-      min-width: 140px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-      
-      li button,
-      li a,
-      li span {
-        padding: 12px 16px;
-        font-size: 14px;
-      }
-    }
-  }
-}
-.no-story-message {
-  text-align: center;
-  font-size: 1.2rem;
-  color: #666;
-  margin: 2rem 0;
-  font-weight: 500;
-}
-
-// Dark mode support (optional)
-@media (prefers-color-scheme: dark) {
-  .task-card {
-    background: #2d2d2d;
-    border-color: #404040;
-    color: #e0e0e0;
-
-    .task-options {
-      .options-button {
-        color: #b0b0b0;
-
-        &:hover {
-          background: rgba(255, 255, 255, 0.1);
-          color: #e0e0e0;
-        }
-
-        &:active {
-          background: rgba(255, 255, 255, 0.2);
-        }
-      }
-
-      .task-menu {
-        background: #3d3d3d;
-        border-color: #505050;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-
-        li button,
-        li a,
-        li span {
-          color: #e0e0e0;
+          &::before {
+            content: '+';
+            font-size: 16px;
+            font-weight: bold;
+          }
 
           &:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
+            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
           }
 
           &:active {
-            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(0);
+          }
+
+          &:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
           }
         }
+      }
+    }
+  }
 
-        li:not(:last-child)::after {
-          background: #505050;
+  // Board Table Container
+  .board-table-container {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  // Scrum Table
+  .scrum-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th {
+      background: #f8f9fa;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid #dee2e6;
+      font-size: 14px;
+    }
+
+    .story-column {
+      width: 25%;
+      background: #e3f2fd;
+    }
+
+    .task-column {
+      width: 25%;
+    }
+
+    .todo-column {
+      background: #fff3e0;
+    }
+
+    .progress-column {
+      background: #e8f5e8;
+    }
+
+    .done-column {
+      background: #f3e5f5;
+    }
+
+    .story-row {
+      border-bottom: 1px solid #dee2e6;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+      }
+    }
+
+    .story-cell,
+    .task-cell {
+      padding: 15px;
+      vertical-align: top;
+      border-right: 1px solid #dee2e6;
+    }
+  }
+
+  // Story Card
+  .story-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px;
+    position: relative;
+    transition: box-shadow 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .story-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      position: relative;
+
+      .story-id {
+        color: #6366f1;
+        font-weight: 500;
+        font-size: 12px;
+        flex: 1;
+      }
+
+      .add-task-btn {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: transparent;
+        border: none;
+        color: #666666;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: #e0e0e0;
+          color: #333;
+          transform: scale(1.05);
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
+
+        &:focus {
+          outline: 2px solid #2563eb;
+          outline-offset: 1px;
+        }
+      }
+    }
+
+    .story-title {
+      margin-bottom: 10px;
+      color: #333;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .story-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 11px;
+
+      .team-badge {
+        background: #e3f2fd;
+        color: #1976d2;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .story-actions {
+        display: flex;
+        gap: 5px;
+
+        .action-btn {
+          background: none;
+          border: 1px solid #ddd;
+          padding: 4px 8px;
+          border-radius: 3px;
+          cursor: pointer;
+          font-size: 12px;
+          color: #666;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: #f5f5f5;
+            color: #333;
+            border-color: #bbb;
+          }
+
+          &:focus {
+            outline: 2px solid #2563eb;
+            outline-offset: 1px;
+          }
+        }
+      }
+    }
+  }
+
+  // Task Container
+  .task-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 100px;
+  }
+
+  // Task Card
+  .task-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 8px;
+    position: relative;
+    transition: all 0.2s ease;
+    cursor: grab;
+
+    &:hover {
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    // Task type borders
+    &.todo-task {
+      border-left: 4px solid #ff9800;
+    }
+
+    &.progress-task {
+      border-left: 4px solid #4caf50;
+    }
+
+    &.done-task {
+      border-left: 4px solid #9c27b0;
+    }
+
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+      position: relative;
+
+      .task-id {
+        font-weight: 600;
+        color: #333;
+        font-size: 13px;
+        flex: 1;
+        margin-right: 8px;
+        line-height: 1.3;
+      }
+
+      .task-options {
+        position: relative;
+        display: flex;
+        align-items: center;
+        z-index: 10;
+
+        button[mat-icon-button] {
+          width: 20px;
+          height: 20px;
+          line-height: 20px;
+          
+          ::ng-deep .mat-icon {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+            line-height: 16px;
+          }
+        }
+      }
+    }
+
+    .task-description {
+      margin-bottom: 8px;
+      color: #666;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .task-details {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+
+      .task-estimate,
+      .task-points {
+        background: #f5f5f5;
+        padding: 2px 6px;
+        border-radius: 10px;
+        font-size: 11px;
+        color: #666;
+        white-space: nowrap;
+      }
+
+      .badge {
+        padding: 2px 6px;
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: capitalize;
+
+        &.bg-danger {
+          background-color: #dc3545;
+          color: white;
+        }
+
+        &.bg-secondary {
+          background-color: #6c757d;
+          color: white;
+        }
+      }
+    }
+
+    .task-progress {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+
+      .progress-bar {
+        flex: 1;
+        height: 6px;
+        background: #e0e0e0;
+        border-radius: 3px;
+        overflow: hidden;
+
+        .progress-fill {
+          height: 100%;
+          background: #4caf50;
+          transition: width 0.3s ease;
+        }
+      }
+
+      .progress-text {
+        font-size: 11px;
+        color: #666;
+        white-space: nowrap;
+      }
+    }
+
+    .task-completion {
+      margin-bottom: 6px;
+
+      .completion-badge {
+        background: #4caf50;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: 500;
+      }
+    }
+
+    .task-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #888;
+      line-height: 1.3;
+
+      .task-assignee {
+        flex: 1;
+        margin-right: 8px;
+      }
+
+      .task-date {
+        white-space: nowrap;
+      }
+    }
+  }
+
+  // No tasks/stories message
+  .no-tasks {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 4px;
+    border: 2px dashed #ddd;
+  }
+
+  .no-story-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    margin: 2rem 0;
+    font-weight: 500;
+    padding: 3rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 2px dashed #ddd;
+  }
+}
+
+// Story Action Buttons
+.story-stats {
+  display: flex;
+  gap: 0px;
+
+  button {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 14px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #333;
+    }
+
+    &:active {
+      color: #000;
+    }
+
+    &:focus {
+      outline: 1px dotted #666;
+      outline-offset: 2px;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .scrum-board {
+    padding: 10px;
+
+    .header {
+      flex-direction: column;
+      gap: 15px;
+      text-align: center;
+      padding: 15px;
+
+      .left-section,
+      .right-section {
+        width: 100%;
+      }
+
+      .right-section {
+        justify-content: center;
+
+        .sprint-info {
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
+
+      .left-section {
+        .page-title {
+          font-size: 24px;
+        }
+
+        .title-underline {
+          align-self: center;
+        }
+      }
+    }
+
+    .scrum-table {
+      th {
+        padding: 10px;
+        font-size: 12px;
+      }
+
+      .story-cell,
+      .task-cell {
+        padding: 10px;
+      }
+    }
+
+    .task-card {
+      .task-options {
+        // Always show on mobile for better touch accessibility
+        visibility: visible !important;
+
+        button[mat-icon-button] {
+          width: 24px;
+          height: 24px;
+          
+          ::ng-deep .mat-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+          }
         }
       }
     }
   }
 }
 
-// Animation keyframes for smooth interactions
-@keyframes fadeInScale {
+@media (max-width: 480px) {
+  .scrum-board {
+    .header .right-section {
+      .sprint-info {
+        width: 100%;
+
+        .sprint-dropdown {
+          flex-direction: column;
+          gap: 5px;
+          width: 100%;
+
+          select {
+            width: 100%;
+          }
+        }
+      }
+
+      .controls .control-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    .board-table-container {
+      overflow-x: auto;
+    }
+
+    .scrum-table {
+      min-width: 600px;
+    }
+  }
+}
+
+// Drag and Drop Styles
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 6px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  opacity: 0.9;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.3;
+  border: 2px dashed #ccc;
+  background: #f0f0f0;
+}
+
+.cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+// Animation classes
+.scrum-board {
+  .fade-in {
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  .slide-in {
+    animation: slideIn 0.3s ease-out;
+  }
+}
+
+// Keyframe animations
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-8px) scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 
-@keyframes fadeOutScale {
+@keyframes slideIn {
   from {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateX(-10px);
+    opacity: 0;
   }
   to {
-    opacity: 0;
-    transform: translateY(-8px) scale(0.95);
-  }
-}
-.task-type {
-  font-weight: 500;
-  text-transform: capitalize;
-  color: #333; // Default color
-
-  &.bug {
-    color: red;
-    font-weight: bold;
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 
-// Focus management for accessibility
-.task-options .options-button:focus + .task-menu,
-.task-menu:focus-within {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0) scale(1);
+// Angular Material Menu Overrides
+::ng-deep {
+  .mat-menu-panel {
+    min-width: 140px !important;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .mat-menu-item {
+    font-size: 13px;
+    line-height: 1.4;
+    height: auto;
+    padding: 8px 12px;
+
+    .mat-icon {
+      margin-right: 8px;
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+  }
+
+  // Material icon button overrides
+  .mat-icon-button {
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    
+    &.mat-button-base {
+      padding: 0;
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .scrum-board {
+    background-color: #111827;
+    color: #f3f4f6;
+
+    .header {
+      background: rgba(55, 65, 81, 0.3);
+      
+      .left-section .page-title {
+        color: #f9fafb;
+      }
+
+      .right-section {
+        .sprint-info {
+          .sprint-dropdown {
+            label {
+              color: #d1d5db;
+            }
+
+            select {
+              background: #374151;
+              color: #f3f4f6;
+              border-color: #4b5563;
+
+              &:focus {
+                border-color: #60a5fa;
+                box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+              }
+            }
+          }
+
+          .sprint-details {
+            color: #9ca3af;
+
+            .sprint-name {
+              color: #e5e7eb;
+            }
+
+            .date-range {
+              color: #6b7280;
+            }
+          }
+        }
+
+        .controls .control-btn {
+          background: #3b82f6;
+
+          &:hover {
+            background: #2563eb;
+          }
+        }
+      }
+    }
+
+    .board-table-container {
+      background: #1f2937;
+    }
+
+    .scrum-table th {
+      background: #374151;
+      color: #f9fafb;
+    }
+
+    .story-card,
+    .task-card {
+      background: #374151;
+      border-color: #4b5563;
+      color: #f3f4f6;
+    }
+
+    .no-tasks,
+    .no-story-message {
+      background: #374151;
+      color: #9ca3af;
+      border-color: #4b5563;
+    }
+  }
 }

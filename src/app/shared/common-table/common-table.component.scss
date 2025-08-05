@@ -1,9 +1,448 @@
 // Font
 :host {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
 }
 
-// Add these styles to your existing SCSS file
+.search-section {
+  width: 100%;
+
+  .search-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+
+    .search-container {
+      flex: 1;
+      min-width: 300px;
+      position: relative;
+
+      .search-input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        .search-icon {
+          position: absolute;
+          left: 1rem;
+          width: 20px;
+          height: 20px;
+          color: #6b7280;
+          z-index: 2;
+        }
+
+        .search-input {
+          width: 100%;
+          padding: 0.875rem 1rem 0.875rem 3rem;
+          border: 2px solid #e5e7eb;
+          border-radius: 12px;
+          font-size: 0.95rem;
+          background: #ffffff;
+          transition: all 0.2s ease;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+          &::placeholder {
+            color: #9ca3af;
+          }
+
+          &:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1),
+              0 4px 12px rgba(0, 0, 0, 0.08);
+          }
+        }
+
+        .clear-search-btn {
+          position: absolute;
+          right: 0.75rem;
+          background: #f3f4f6;
+          border: none;
+          border-radius: 8px;
+          width: 24px;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.15s ease;
+
+          svg {
+            width: 14px;
+            height: 14px;
+            color: #6b7280;
+          }
+
+          &:hover {
+            background: #e5e7eb;
+
+            svg {
+              color: #374151;
+            }
+          }
+        }
+      }
+    }
+
+    .search-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      .filter-heading {
+        margin-bottom: 0.5rem;
+
+        h6 {
+          font-size: 0.95rem;
+          font-weight: 600;
+          color: #1f2937; // Tailwind gray-800
+          margin: 0 0 0.3rem 0;
+        }
+      }
+
+      // Filter dropdown styling
+      .filter-select {
+        padding: 0.875rem 1rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        background: #ffffff;
+        color: #374151;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        min-width: 120px;
+
+        &:focus {
+          outline: none;
+          border-color: #2563eb;
+          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        &:hover {
+          border-color: #cbd5e1;
+        }
+      }
+
+      // Date input styling
+      .date-input {
+        padding: 0.875rem 1rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        background: #ffffff;
+        color: #374151;
+        transition: all 0.2s ease;
+        min-width: 150px;
+
+        &:focus {
+          outline: none;
+          border-color: #2563eb;
+          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        &:hover {
+          border-color: #cbd5e1;
+        }
+      }
+
+      // Action buttons
+      .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.875rem 1.25rem;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: none;
+        text-decoration: none;
+        white-space: nowrap;
+
+        svg {
+          width: 18px;
+          height: 18px;
+        }
+
+        &.secondary {
+          background: #f8fafc;
+          color: #475569;
+          border: 1px solid #e2e8f0;
+
+          &:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          }
+        }
+
+        &.add.primary {
+          background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+          color: #ffffff;
+          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+
+          .plus-icon {
+            transition: transform 0.2s ease;
+          }
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+
+            .plus-icon {
+              transform: rotate(90deg);
+            }
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
+        }
+      }
+    }
+  }
+
+  // Search results info
+  .search-info {
+    .results-count {
+      font-size: 0.875rem;
+      color: #6b7280;
+      font-weight: 500;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+  .search-section .search-row {
+    gap: 0.75rem;
+
+    .search-actions {
+      gap: 0.5rem;
+
+      .filter-select,
+      .date-input {
+        min-width: 100px;
+        font-size: 0.85rem;
+      }
+
+      .action-btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .search-section .search-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+
+    .search-container {
+      min-width: unset;
+
+      .search-input-wrapper .search-input {
+        padding: 0.75rem 1rem 0.75rem 2.75rem;
+        font-size: 0.9rem;
+      }
+      .search-heading {
+        display: block;
+        font-weight: 600;
+        font-size: 0.875rem;
+        color: #374151;
+        margin-bottom: 0.4rem;
+      }
+    }
+
+    .search-actions {
+      justify-content: flex-start;
+      flex-wrap: wrap;
+
+      .filter-select,
+      .date-input,
+      .action-btn {
+        flex: 1;
+        min-width: 120px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .search-section .search-row .search-actions {
+    flex-direction: column;
+    align-items: stretch;
+
+    .filter-select,
+    .date-input,
+    .action-btn {
+      width: 100%;
+      min-width: unset;
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .search-section {
+    .search-row {
+      .search-container .search-input-wrapper .search-input {
+        background: #1f2937;
+        border-color: #374151;
+        color: #f3f4f6;
+
+        &::placeholder {
+          color: #9ca3af;
+        }
+
+        &:focus {
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1),
+            0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      .search-actions {
+        .filter-select,
+        .date-input {
+          background: #1f2937;
+          border-color: #374151;
+          color: #f3f4f6;
+
+          &:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+          }
+
+          &:hover {
+            border-color: #4b5563;
+          }
+        }
+
+        .action-btn.secondary {
+          background: #374151;
+          color: #e5e7eb;
+          border-color: #4b5563;
+
+          &:hover {
+            background: #4b5563;
+            border-color: #6b7280;
+          }
+        }
+      }
+    }
+
+    .search-info .results-count {
+      color: #9ca3af;
+    }
+  }
+}
+
+.whole-content {
+  background: white;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 20px;
+  background-color: #f5f5f5;
+
+  // Header Section
+  .header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+    background: rgba(37, 99, 235, 0.1);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    // Left Section - Title Only
+    .left-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .page-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 4px;
+        position: relative;
+      }
+
+      .title-underline {
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #2563eb, #3b82f6);
+        border-radius: 2px;
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .scrum-board {
+    padding: 10px;
+
+    .header {
+      padding: 15px;
+      text-align: center;
+
+      .left-section {
+        width: 100%;
+        align-items: center;
+
+        .page-title {
+          font-size: 24px;
+        }
+
+        .title-underline {
+          align-self: center;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .scrum-board {
+    .header {
+      .left-section {
+        .page-title {
+          font-size: 20px;
+        }
+
+        .title-underline {
+          width: 50px;
+          height: 2px;
+        }
+      }
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .scrum-board {
+    background-color: #111827;
+    color: #f3f4f6;
+
+    .header {
+      background: rgba(55, 65, 81, 0.3);
+
+      .left-section .page-title {
+        color: #f9fafb;
+      }
+    }
+  }
+}
 
 .title-section {
   margin: 1.5rem 0 2rem 0;
@@ -16,24 +455,25 @@
   background: #2563eb1a;
   justify-content: space-between;
   padding: 0 0.5rem;
+  margin-top: -20px;
+  border-radius: 8px;
   gap: 2rem;
 
   .title-content {
     position: relative;
     padding-bottom: 0.5rem;
-    
+
     .table-title {
       color: #1e293b;
       font-size: 2rem;
-      font-weight: 700;
       margin: 0;
       width: 500px;
       letter-spacing: -0.025em;
       position: relative;
       display: inline-block;
-      
+
       &::before {
-        content: '';
+        content: "";
         position: absolute;
         left: 0;
         bottom: -4px;
@@ -44,6 +484,11 @@
       }
     }
   }
+  ::ng-deep .mat-paginator {
+    margin-top: 1rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+  }
 
   .add-btn-container {
     .action-btn.add {
@@ -53,7 +498,7 @@
       background: #2563eb;
       color: #fff;
       border: none;
-      margin-top:15px;
+      margin-top: 15px;
       border-radius: 0.65rem;
       padding: 0.6rem 1.4rem;
       font-size: 0.95rem;
@@ -92,7 +537,7 @@
 
 // Optional: Add a subtle background effect
 .title-section::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -20%;
   left: -5%;
@@ -111,7 +556,7 @@
 @media (max-width: 768px) {
   .title-container {
     gap: 1rem;
-    
+
     .title-content .table-title {
       font-size: 1.75rem;
     }
@@ -163,7 +608,8 @@
     box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
     transition: background 0.18s, box-shadow 0.18s;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       background: #1e40af;
       box-shadow: 0 4px 14px rgba(37, 99, 235, 0.13);
     }
@@ -173,7 +619,7 @@
 .table-container {
   background: #fff;
   border-radius: 0.9rem;
-  box-shadow: 0 4px 24px 0 rgba(30,41,59,0.07);
+  box-shadow: 0 4px 24px 0 rgba(30, 41, 59, 0.07);
   padding: 1.6rem 1.5rem 1.2rem 1.5rem;
   margin: 1rem 0;
   overflow-x: auto;
@@ -259,7 +705,8 @@
     color: #2563eb;
     border: 1px solid #2563eb;
     background: #f0f6ff;
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       background: #dbeafe;
       border-color: #1d4ed8;
       color: #1d4ed8;
@@ -270,7 +717,8 @@
     color: #334155;
     border: 1px solid #cbd5e1;
     background: #f8fafc;
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       border-color: #1d4ed8;
       color: #1d4ed8;
       background: #e0e7ef;
@@ -281,7 +729,8 @@
     color: #dc2626;
     border: 1px solid #fecaca;
     background: #fff1f2;
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       border-color: #b91c1c;
       color: #b91c1c;
       background: #fee2e2;
@@ -302,7 +751,9 @@
   .table-container {
     padding: 0.7rem;
   }
-  .project-table, .project-table th, .project-table td {
+  .project-table,
+  .project-table th,
+  .project-table td {
     font-size: 0.96rem;
     padding: 0.65rem 0.75rem;
   }
@@ -314,7 +765,9 @@
   .table-container {
     padding: 0.1rem;
   }
-  .project-table, .project-table th, .project-table td {
+  .project-table,
+  .project-table th,
+  .project-table td {
     font-size: 0.93rem;
     padding: 0.5rem 0.55rem;
   }
@@ -323,6 +776,6 @@
   }
   .add-btn-container {
     margin-bottom: 0.7rem;
-    margin-top:15px;
+    margin-top: 15px;
   }
 }

@@ -1,4 +1,3 @@
-// src/app/core/services/employee.service.ts
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { catchError, from, map, throwError } from 'rxjs';
@@ -10,18 +9,31 @@ import { Employee } from '../models/employee.model';
 export class EmployeeService {
   constructor(private supabaseService: SupabaseService) { }
 
-  getEmployees() {
-    return from(
-      this.supabaseService.client
-        .from('employee')
-        .select('*')
-        .order('id', { ascending: true })
-        .then(({ data, error }) => {
-          if (error) throw error;
-          return data;
-        })
-    );
+  getEmployees(filters?: any) {
+  let query = this.supabaseService.client
+    .from('employee')
+    .select('*')
+    .order('id', { ascending: true });
+
+  if (filters?.search) {
+    console.log("This is search",filters.search);
+    query = query.ilike('name', `%${filters.search}%`);
   }
+
+
+  if (filters?.status) {
+    query = query.eq('role', filters.status);
+  }
+
+  return from(
+    query.then(({ data, error }) => {
+      if (error) throw error;
+      console.log('Filtered employees:', data);
+      return data;
+    })
+  );
+}
+
   createSupabaseUser(email: string, password: string) {
     return from(
       this.supabaseService.client.auth.signUp({

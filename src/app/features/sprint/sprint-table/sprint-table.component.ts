@@ -20,7 +20,16 @@ export class SprintTableComponent implements OnInit {
   dropdown: projectDropDown[] = [];
   sprintList: any = [];
   sprintHeaders: string[] = ['Sprint Name', 'Goal', 'Start Date', 'End Date', 'Status'];
-sprintKeys: string[] = ['sprintName', 'goal', 'startDate', 'endDate', 'status'];
+  sprintKeys: string[] = ['sprintName', 'goal', 'startDate', 'endDate', 'status'];
+  searchFields = [
+    { label: 'Status', key: 'status', type: 'select', options: ['In Progress', 'Planned', 'Completed'] },
+    { label: 'Start Date', key: 'start_date', type: 'date' },
+    { label: 'End Date', key: 'end_date', type: 'date' }
+  ];
+  values = {
+    status: ''
+  };
+  searchText: string = '';
 
   startDate: Date = new Date();
   endDate: Date = new Date();
@@ -34,7 +43,7 @@ sprintKeys: string[] = ['sprintName', 'goal', 'startDate', 'endDate', 'status'];
     private dialog: MatDialog,
     private sharedService: SharedService,
     private loader: LoaderService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -63,6 +72,18 @@ sprintKeys: string[] = ['sprintName', 'goal', 'startDate', 'endDate', 'status'];
       },
     });
   }
+  onFilter(data: any) {
+    console.log('Filter data:', data);
+    this.values = data;
+    this.getSprintData();
+  }
+  onClear() {
+    this.values = {
+      status: '',
+    };
+    this.searchText = '';
+    this.getSprintData();
+  }
 
   changeInDropdown() {
     this.sharedService.selectedProjectId$.subscribe((id) => {
@@ -75,10 +96,13 @@ sprintKeys: string[] = ['sprintName', 'goal', 'startDate', 'endDate', 'status'];
 
   getSprintData() {
     const selectedProjectId = this.sharedService.getSelectedProjectId();
+     const filters = {
+    ...this.values,
+  };
 
     if (selectedProjectId) {
       this.loader.show();
-      this.sprint.getSprint(selectedProjectId).subscribe({
+      this.sprint.getSprint(selectedProjectId,filters).subscribe({
         next: (res: any) => {
           this.sprintList = res;
           this.loader.hide();
@@ -167,7 +191,7 @@ sprintKeys: string[] = ['sprintName', 'goal', 'startDate', 'endDate', 'status'];
         },
         error: (error) => {
           this.loader.hide();
-          this.alert.sidePopUp(error.message,'error');
+          this.alert.sidePopUp(error.message, 'error');
           console.error(error);
         },
       });
@@ -186,7 +210,7 @@ sprintKeys: string[] = ['sprintName', 'goal', 'startDate', 'endDate', 'status'];
       },
       error: (err) => {
         this.loader.hide();
-        this.alert.sidePopUp(err.message,'error');
+        this.alert.sidePopUp(err.message, 'error');
       },
     });
   }

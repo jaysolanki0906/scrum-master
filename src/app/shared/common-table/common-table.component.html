@@ -1,69 +1,229 @@
-<div class="title-section">
-  <div class="title-container">
-    <div class="title-content">
-      <h1 class="table-title">{{ title }} Module</h1>
-      <div class="title-underline"></div>
-    </div>
-    <div class="add-btn-container">
-      <button class="action-btn add" title="Add" (click)="add.emit()">
-        <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 5v14m-7-7h14"></path>
-        </svg>
-        <span>Add {{title}}</span>
-      </button>
+<div class="whole-content">
+  <div class="title-section">
+    <div class="title-container">
+      <div class="title-content">
+        <h1 class="table-title">{{ title }} Module</h1>
+        <div class="title-underline"></div>
+      </div>
+      <div class="add-btn-container">
+        <button class="action-btn add" title="Add" (click)="add.emit()">
+          <svg
+            class="plus-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 5v14m-7-7h14"></path>
+          </svg>
+          <span>Add {{ title }}</span>
+        </button>
+      </div>
     </div>
   </div>
-</div>
+  <div *ngIf="fields && fields.length > 0">
+  <div class="search-section">
+    <div class="search-row">
+      <!-- Search Bar -->
+      <div class="search-container">
+        <div class="search-heading">
+          <h6>Search {{ title }}s</h6>
+        </div>
+        <div class="search-input-wrapper">
+          <svg
+            class="search-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="8" cy="12" r="3" />
+            <circle cx="16" cy="12" r="3" />
+            <path d="M11 12h2" />
+            <circle cx="8" cy="12" r="1" fill="currentColor" />
+            <circle cx="16" cy="12" r="1" fill="currentColor" />
+          </svg>
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search {{ title | lowercase }}..."
+            [(ngModel)]="searchTerm"
+            autocomplete="off"
+          />
+          
+        </div>
+      </div>
 
-<div class="table-container">
-  <table class="project-table">
-    <thead>
-      <tr>
-        <th *ngFor="let head of headers">{{ head }}</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of data">
-        <td *ngFor="let key of keys" class="truncate">
-          {{
-            key === "password"
-              ? (row[key] | maskText)
-              : key === "description"
+      <div class="search-actions">
+        <div class="search-input-group" *ngFor="let field of fields">
+          <div class="search-heading">
+            <h6>{{ field.label }}</h6>
+          </div>
+
+          <select
+            *ngIf="field.type === 'select'"
+            class="filter-select"
+            [(ngModel)]="values[field.key]">
+            <option value="" >All {{title}}</option>
+            <option *ngFor="let opt of field.options" [value]="opt">
+              {{ opt }}
+            </option>
+          </select>
+
+          <input
+            *ngIf="field.type === 'date'"
+            type="date"
+            class="date-input"
+            [(ngModel)]="values[field.key]"/>
+
+          <input
+            *ngIf="field.type === 'text'"
+            type="text"
+            class="text-input"
+            [(ngModel)]="values[field.key]"
+            (input)="emitFilter()"
+          />
+        </div>
+
+        <div class="search-input-group">
+          <div class="search-heading"><h6>&nbsp;</h6></div>
+          <button
+            class="action-btn secondary"
+            (click)="emitFilter()"
+            title="Filter"
+          >
+            <svg
+              class="search-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-4.35-4.35m1.43-5.23a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"
+              />
+            </svg>
+            Search
+          </button>
+        </div>
+
+        <!-- Add Button -->
+        <div class="search-input-group">
+          <div class="search-heading"><h6>&nbsp;</h6></div>
+          <button
+            class="action-btn add primary"
+            (click)="clearSearch()"
+            title="Add"
+          >
+            <span>X</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="table-container">
+    <table class="project-table">
+      <thead>
+        <tr>
+          <th *ngFor="let head of headers">{{ head }}</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of pagedData">
+          <td *ngFor="let key of keys" class="truncate">
+            {{
+              key === "password"
+                ? (row[key] | maskText)
+                : key === "description"
                 ? (row[key] | truncateWords : 4)
                 : key === "owner" || key === "logged_by"
-                  ? getOwnerName(row[key])
-                  : key === "task_id"
-                    ? taskMap[row[key]] || "Unknown"
-                    : row[key]
-          }}
-        </td>
-        <td class="actions">
-          <div class="action-btn-group">
-            <button class="action-btn edit" (click)="edit.emit(row)" title="Edit">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-              </svg>
-            </button>
-            <button class="action-btn view" (click)="view.emit(row)" title="View">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </button>
-            <button class="action-btn delete" (click)="delete.emit(row)" title="Delete">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="3,6 5,6 21,6"></polyline>
-                <path d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"></path>
-              </svg>
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div *ngIf="data.length === 0" class="no-story-message">
-    There is no data.
+                ? getOwnerName(row[key])
+                : key === "task_id"
+                ? taskMap[row[key]] || "Unknown"
+                : row[key]
+            }}
+          </td>
+          <td class="actions">
+            <div class="action-btn-group">
+              <button
+                class="action-btn edit"
+                (click)="edit.emit(row)"
+                title="Edit"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                  ></path>
+                  <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+              </button>
+              <button
+                class="action-btn view"
+                (click)="view.emit(row)"
+                title="View"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+              <button
+                class="action-btn delete"
+                (click)="delete.emit(row)"
+                title="Delete"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="3,6 5,6 21,6"></polyline>
+                  <path
+                    d="m19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="data.length === 0" class="no-story-message">
+      There is no data.
+    </div>
   </div>
+  <mat-paginator
+    [length]="data.length"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[3, 10, 20]"
+    (page)="onPageChange($event)"
+    showFirstLastButtons
+  >
+  </mat-paginator>
 </div>

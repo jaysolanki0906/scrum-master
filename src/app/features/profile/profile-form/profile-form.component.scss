@@ -1,3 +1,109 @@
+// Simple Header SCSS - Angular
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.whole-content {
+  background: white;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 20px;
+  background-color: #f5f5f5;
+
+  // Header Section
+  .header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+    background: rgba(37, 99, 235, 0.1);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    // Left Section - Title Only
+    .left-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .page-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 4px;
+        position: relative;
+      }
+
+      .title-underline {
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #2563eb, #3b82f6);
+        border-radius: 2px;
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .scrum-board {
+    padding: 10px;
+
+    .header {
+      padding: 15px;
+      text-align: center;
+
+      .left-section {
+        width: 100%;
+        align-items: center;
+
+        .page-title {
+          font-size: 24px;
+        }
+
+        .title-underline {
+          align-self: center;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .scrum-board {
+    .header {
+      .left-section {
+        .page-title {
+          font-size: 20px;
+        }
+
+        .title-underline {
+          width: 50px;
+          height: 2px;
+        }
+      }
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .scrum-board {
+    background-color: #111827;
+    color: #f3f4f6;
+
+    .header {
+      background: rgba(55, 65, 81, 0.3);
+      
+      .left-section .page-title {
+        color: #f9fafb;
+      }
+    }
+  }
+}
 form {
   max-width: 400px;
   margin: 40px auto;

@@ -26,6 +26,13 @@ export class SupabaseService {
 
   constructor(private loaderService: LoaderService) {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
+    this.supabase.auth.onAuthStateChange((event, session) => {
+          if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+            console.log('User signed in or token refreshed:', session);
+          } else if (event === 'SIGNED_OUT') {
+            console.log('User signed out');
+          }
+        });
   }
 
   get session() {

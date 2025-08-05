@@ -7,7 +7,7 @@ import { Task } from '../models/task.model';
   providedIn: 'root',
 })
 export class TaskService {
-  constructor(private supabaseService: SupabaseService) {}
+  constructor(private supabaseService: SupabaseService) { }
   getTask(id: string) {
     return from(
       this.supabaseService.client.from('task').select('*').eq('story_id', id)
@@ -25,48 +25,58 @@ export class TaskService {
         })
     );
   }
-  editTask(id:string,payload:Task)
-  {
+  editTask(id: string, payload: Task) {
     return from(
-      this.supabaseService.client.from('task').update(payload).eq("id",id).then(({ data, error }) => {
-          if (error) throw error;
-          console.log('task by ID:', data);
-          return data;
-        })
-    );
-  }
-  editStatusTask(id: string, { status }: { status: string }) {
-  return from(
-    this.supabaseService.client
-      .from('task')
-      .update({ status })  
-      .eq("id", id)
-      .then(({ data, error }) => {
+      this.supabaseService.client.from('task').update(payload).eq("id", id).then(({ data, error }) => {
         if (error) throw error;
         console.log('task by ID:', data);
         return data;
       })
-  );
-}
-
-  getTaskById(id:string)
-  {
+    );
+  }
+  editStatusTask(id: string, { status }: { status: string }) {
     return from(
-      this.supabaseService.client.from('task').select('*').eq('id',id).then(({ data, error }) => {
+      this.supabaseService.client
+        .from('task')
+        .update({ status })
+        .eq("id", id)
+        .then(({ data, error }) => {
           if (error) throw error;
           console.log('task by ID:', data);
           return data;
         })
     );
   }
-  deleteTask(id:string)
-  {
+  getHoursLogin(taskId: string) {
     return from(
-      this.supabaseService.client.from('task').delete().eq("id",id).then(({ data, error }) => {
+      this.supabaseService.client
+        .from('loggingefforts')
+        .select('hours_spent')
+        .eq('task_id', taskId)
+        .then(({ data, error }) => {
           if (error) throw error;
-          console.log('task by ID:', data);
-          return data;
+          const total = (data || []).reduce((sum, row) => sum + (row.hours_spent || 0), 0);
+          return total;
         })
+    );
+  }
+
+  getTaskById(id: string) {
+    return from(
+      this.supabaseService.client.from('task').select('*').eq('id', id).then(({ data, error }) => {
+        if (error) throw error;
+        console.log('task by ID:', data);
+        return data;
+      })
+    );
+  }
+  deleteTask(id: string) {
+    return from(
+      this.supabaseService.client.from('task').delete().eq("id", id).then(({ data, error }) => {
+        if (error) throw error;
+        console.log('task by ID:', data);
+        return data;
+      })
     );
   }
 }

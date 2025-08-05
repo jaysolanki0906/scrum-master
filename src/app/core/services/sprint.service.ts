@@ -9,19 +9,35 @@ import { Sprint } from '../models/sprint.model';
 export class SprintService {
   constructor(private supabaseService: SupabaseService) {}
 
-  getSprint(projectId: string) {
-    return from(
-      this.supabaseService.client
-        .from('sprint')
-        .select('*')
-        .eq('projectId', projectId)
-        .then(({ data, error }) => {
-          if (error) throw error;
-          console.log('Project by ID:', data);
-          return data;
-        })
-    );
+  getSprint(projectId: string, filters?: any) {
+    console.log(filters);
+  let query = this.supabaseService.client
+    .from('sprint')
+    .select('*')
+    .eq('projectId', projectId);
+
+  if (filters?.status) {
+    query = query.eq('status', filters.status);
   }
+  if(filters?.search){
+    query = query.ilike('sprintName', `%${filters.search}%`);
+  }
+
+  if (filters?.start_date && filters?.end_date) {
+    query = query
+      .gte('startDate', filters.start_date)
+      .lte('endDate', filters.end_date);
+  }
+
+  return from(
+    query.then(({ data, error }) => {
+      if (error) throw error;
+      console.log('Filtered sprints by projectId:', data);
+      return data;
+    })
+  );
+}
+
 
 getSprintById(sprintId: string | number) {
   return from(

@@ -1,11 +1,19 @@
 <div class="scrum-board">
   <!-- Header -->
   <div class="header">
+    <!-- Left Section - Title -->
     <div class="left-section">
+      <h1 class="page-title">Story Module</h1>
+      <div class="title-underline"></div>
+    </div>
+
+    <!-- Right Section - Controls -->
+    <div class="right-section">
       <div class="sprint-info">
         <div class="sprint-dropdown">
           <label for="sprintSelect">Select Sprint:</label>
           <select
+            id="sprintSelect"
             [(ngModel)]="selectedSprint"
             (change)="onSprintChange(selectedSprint)"
           >
@@ -15,17 +23,15 @@
           </select>
         </div>
 
-        <div class="sprint-info" *ngIf="selectedSprint">
-          <span>{{ selectedSprint.sprintName }}</span>
+        <div class="sprint-details" *ngIf="selectedSprint">
+          <span class="sprint-name">{{ selectedSprint.sprintName }}</span>
           <span class="date-range">
             {{ selectedSprint.startDate | date : "dd MMM yyyy" }} -
             {{ selectedSprint.endDate | date : "dd MMM yyyy" }}
           </span>
         </div>
       </div>
-    </div>
 
-    <div class="right-section">
       <div class="controls">
         <button class="control-btn" (click)="addStoryDialog()">
           Add Story
@@ -143,7 +149,7 @@
                   </div>
                   <div class="task-meta">
                     <span class="task-assignee"
-                      >Assigned: {{ getEmployeeName(task.assign_to) }}</span
+                      >Assigned: {{ getEmployeeName(task.assign_to) }} Total hours: {{ taskHoursMap[task.id] || 0 }} </span
                     >
                     <span class="task-date">{{
                       task.created_at | date : "short"
@@ -227,7 +233,7 @@
                 </div>
                 <div class="task-meta">
                   <span class="task-assignee"
-                    >Assigned: {{ getEmployeeName(task.assign_to) }}</span
+                    >Assigned: {{ getEmployeeName(task.assign_to) }} Total hours: {{ taskHoursMap[task.id] || 0 }}</span
                   >
                   <span class="task-date">{{
                     task.created_at | date : "short"
@@ -315,7 +321,7 @@
                 </div>
                 <div class="task-meta">
                   <span class="task-assignee"
-                    >Assigned: {{ getEmployeeName(task.assign_to) }}</span
+                    >Assigned: {{ getEmployeeName(task.assign_to) }} Total hours: {{ taskHoursMap[task.id] || 0 }}</span
                   >
                   <span class="task-date">{{
                     task.created_at | date : "short"

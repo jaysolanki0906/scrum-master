@@ -5,6 +5,7 @@ import { EmployeeService } from '../../../core/services/employee.service';
 import { Employee } from '../../../core/models/employee.model';
 import { EmployeeFormComponent } from '../employee-form/employee-form.component';
 import { LoaderService } from '../../../core/services/loader.service'; 
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-employee-table',
@@ -15,6 +16,13 @@ import { LoaderService } from '../../../core/services/loader.service';
 export class EmployeeTableComponent {
   employees: Employee[] = [];
   searchText: string = '';
+  
+   searchFields = [
+    { label: 'User Type', key: 'status', type: 'select', options: ['User', 'Admin'] },
+  ];
+  values = {
+    status: ''
+  };
 
   constructor(
     private dialog: MatDialog,
@@ -28,8 +36,11 @@ export class EmployeeTableComponent {
   }
 
   fetchEmployees() {
+     const filters = {
+    ...this.values,
+  };
     this.loaderService.show();
-    this.employeeServices.getEmployees().subscribe({
+    this.employeeServices.getEmployees(filters).subscribe({
       next: (res) => {
         this.employees = res;
         console.log('this.employees', this.employees);
@@ -42,7 +53,18 @@ export class EmployeeTableComponent {
       },
     });
   }
-
+  onFilter(data: any) {
+    console.log('Filter data:', data);
+    this.values = data;
+    this.fetchEmployees();
+  }
+  onClear() {
+    this.values = {
+      status: '',
+    };
+    this.searchText = '';
+    this.fetchEmployees();
+  }
   edit(employee: any) {
     
     this.dialog

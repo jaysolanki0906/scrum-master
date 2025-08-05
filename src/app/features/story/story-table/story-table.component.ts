@@ -26,8 +26,8 @@ import { LoaderService } from '../../../core/services/loader.service';
 export class StoryTableComponent implements OnInit {
   storyList: Story[] = [];
   sprintList: Sprint[] = [];
-  taskList: Task[] = [];
   employeeList: Employee[] = [];
+  taskHoursMap: { [taskId: number]: number } = {};
   hoveredTaskId: number | null = null;
   selectedSprint!: Sprint;
   draggedTask: any;
@@ -158,6 +158,7 @@ export class StoryTableComponent implements OnInit {
           this.task.getTask(story.id.toString()).subscribe({
             next: (res) => {
               story.tasks = res.data || [];
+              story.tasks.forEach(task => this.getHoursByTaskId(task.id));
               loaded++;
               if (loaded === stories.length) {
                 this.storyList = stories;
@@ -179,6 +180,24 @@ export class StoryTableComponent implements OnInit {
       },
     });
   }
+  getHoursByTaskId(taskId: number) {
+  if (this.taskHoursMap[taskId] !== undefined) {
+    return; 
+  }
+  console.log('this is task',taskId);
+  this.task.getHoursLogin(taskId.toString()).subscribe({
+    next: (res) => {
+      console.log(res);
+      const totalHours = res || 0; 
+      this.taskHoursMap[taskId] = totalHours;
+    },
+    error: (err) => {
+      console.error('Error fetching hours for task:', taskId, err);
+      this.taskHoursMap[taskId] = 0;
+    }
+  });
+}
+
 
   editDialog(event: Story) {
     const sprintid = this.selectedSprint.id;
